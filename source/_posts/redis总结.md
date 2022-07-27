@@ -14,7 +14,29 @@ Redis有5种数据类型，分别是：String、List、Set、Zset、Hash。
 
 ### String
 
-​	
+​	字符串是二进制安全的，可以存任何数据如数字，字符串，jpg图片或者序列化的对象。最大长度为 512 兆字节。
+
+​	常用命令包括
+
+​	GET name ：获取存储在给定键中的值 GET name 
+
+​	SET name value：设置存储在给定键中的值 
+
+​	DEL name：删除存储在给定键中的值 
+
+​	INCR key：将键存储的值加1
+
+​	DECR key：将键存储的值减1
+
+​	INCRBY key amount ：将键存储的值加上整数
+
+​	DECRBY key amount：将键存储的值减去整数
+
+​	用法：
+
+​	作为缓存层缓存数据，作为计数器进行计算，spring session + redis实现session共享。
+
+
 
 ### List
 
@@ -29,6 +51,20 @@ Redis有5种数据类型，分别是：String、List、Set、Zset、Hash。
 
 
 ### Hash
+
+
+
+## 常见问题
+
+### 缓存击穿
+
+​	如果缓存中的数据在某个时刻批量过期，导致大部分用户的请求都会直接落在数据库上，这种现象就叫作缓存击穿。
+
+### 缓存穿透
+
+
+
+### 缓存雪崩问题
 
 
 
