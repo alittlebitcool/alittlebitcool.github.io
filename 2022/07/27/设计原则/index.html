@@ -16,12 +16,12 @@
   <meta name="author" content="YuXingZh">
   <meta name="keywords" content="">
   
-    <meta name="description" content="文章转载自：https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1264852968060071936 1.单一职责原则单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。 要理解单一职责">
+    <meta name="description" content="1.单一职责原则单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。 要理解单一职责原则，首先我们要理解什么是类的职责。类的职责是由该类的对象在系统中的角色所决定的。举例来讲，教学管理系统中，老师就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计原则">
 <meta property="og:url" content="https://alittlebitcool.github.io/2022/07/27/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="文章转载自：https:&#x2F;&#x2F;www.zhihu.com&#x2F;column&#x2F;c_1264852968060071936 1.单一职责原则单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。 要理解单一职责">
+<meta property="og:description" content="1.单一职责原则单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。 要理解单一职责原则，首先我们要理解什么是类的职责。类的职责是由该类的对象在系统中的角色所决定的。举例来讲，教学管理系统中，老师就">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pica.zhimg.com/v2-878d1bc00adefe457b4df3e53e8ddb4e_720w.jpg?source=d16d100b">
 <meta property="og:image" content="https://pic2.zhimg.com/v2-06330b14adc364880c8d1874821ebaca_720w.jpg?source=d16d100b">
@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://pic3.zhimg.com/v2-54754ce7b13b4ddcf436c4e1a6472bb0_720w.jpg?source=d16d100b">
 <meta property="og:image" content="https://pica.zhimg.com/v2-b984d90b279da153414b3d42b1b7617b_720w.jpg?source=d16d100b">
 <meta property="article:published_time" content="2022-07-27T01:15:51.000Z">
-<meta property="article:modified_time" content="2022-07-27T02:33:41.124Z">
+<meta property="article:modified_time" content="2022-07-28T03:34:25.210Z">
 <meta property="article:author" content="YuXingZh">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://pica.zhimg.com/v2-878d1bc00adefe457b4df3e53e8ddb4e_720w.jpg?source=d16d100b">
@@ -291,8 +291,7 @@
             
               <div class="markdown-body">
                 
-                <p>文章转载自：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1264852968060071936">https://www.zhihu.com/column/c_1264852968060071936</a></p>
-<h3 id="1-单一职责原则"><a href="#1-单一职责原则" class="headerlink" title="1.单一职责原则"></a>1.单一职责原则</h3><p>单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。</p>
+                <h3 id="1-单一职责原则"><a href="#1-单一职责原则" class="headerlink" title="1.单一职责原则"></a>1.单一职责原则</h3><p>单一职责原则（Single Responsibility Principle，SRP）是指：所有的对象都应该有单一的职责，它提供的所有的服务也都仅围绕着这个职责。换句话说就是：一个类而言，应该仅有一个引起它变化的原因，永远不要让一个类存在多个改变的理由。</p>
 <p>要理解单一职责原则，首先我们要理解什么是类的职责。类的职责是由该类的对象在系统中的角色所决定的。举例来讲，教学管理系统中，老师就代表着一种角色，这个角色决定老师的职责就是教学。而要完成教学的职责，老师需要讲课、批改作业，而讲课、批改作业的行为就相当于我们在程序中类的方法，类的方法和属性就是为了完成这个职责而设置的。</p>
 <p>类的单一职责是说一个类应该只做一件事情。如果类中某个方法或属性与它所要完成的职责无关，或是为了完成另外的职责，那么这样的设计就不符合类的单一职责原则。而这样的设计的缺点是降低了类的内聚性，增强了类的耦合性。由此带来的问题是当我们使用这个类时，会把原本不需要的功能也带到了代码中，从而造成冗余代码或代码的浪费。</p>
 <p>例如，考虑下图所示的设计。Rectangle（矩形）类有两个方法，方法draw()用于在屏幕上绘制一个矩形，方法area()用于计算矩形的面积。有两个不同的应用程序都要使用Rectangle类，一个是几何计算系统，Rectangle类会在几何形状计算方面为它提供帮助；一个是绘图系统，它需要使用Rectangle类在屏幕上绘制矩形。</p>
@@ -494,6 +493,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/*代码清单2.5 ShapeTest.java</span><br><span class="hljs-comment"> * 演示面向接口编程</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span> &#123; <br>  Engine engine;   <span class="hljs-comment">//这是类的一个组件，我们能够调用它的方法。</span><br>  <br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">(Key key)</span> &#123;  <span class="hljs-comment">//做为参数传递进来的对象key，其方法可以被调用</span><br>    <span class="hljs-type">Doors</span> <span class="hljs-variable">doors</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Doors</span>();   在方法中创建了一个新的对象，其方法可以被调用<br><br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">authorized</span> <span class="hljs-operator">=</span> key.turns();   <span class="hljs-comment">//调用被当作参数传递进来的对象的方法</span><br><br>    <span class="hljs-keyword">if</span> (authorized) &#123;<br>      engine.start();    <span class="hljs-comment">//调用对象组件的方法</span><br>      updateDashboardDisplay();    <span class="hljs-comment">//调用同一对象内的本地方法</span><br>      doors.lock();           <span class="hljs-comment">//可以调用创建或实例化的对象的方法</span><br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateDashboardDisplay</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">//更新显示</span><br>  &#125;<br>&#125; <br></code></pre></td></tr></table></figure>
 
 <p>迪米特法则是一种面向对象系统设计风格的一种法则，尤其适合做大型复杂系统设计指导原则。但是也会造成系统的不同模块之间的通信效率降低，使系统的不同模块之间不容易协调等缺点。同时，因为迪米特法则要求类与类之间尽量不直接通信，如果类之间需要通信就通过第三方转发的方式，这就直接导致了系统中存在大量的中介类，这些类存在的唯一原因是为了传递类与类之间的相互调用关系，这就毫无疑问的增加了系统的复杂度。解决这个问题的方式是：使用依赖倒转原则，这要就可以是调用方和被调用方之间有了一个抽象层，被调用方在遵循抽象层的前提下就可以自由的变化，此时抽象层成了调用方的朋友。</p>
+<p>文章转载自：<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1264852968060071936">https://www.zhihu.com/column/c_1264852968060071936</a></p>
 
                 
               </div>
