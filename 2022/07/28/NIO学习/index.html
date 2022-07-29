@@ -26,8 +26,10 @@
 <meta property="og:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181918.png">
 <meta property="og:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181933.png">
 <meta property="og:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181947.png">
+<meta property="og:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145709.png">
+<meta property="og:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145753.png">
 <meta property="article:published_time" content="2022-07-28T06:30:05.000Z">
-<meta property="article:modified_time" content="2022-07-28T06:48:14.385Z">
+<meta property="article:modified_time" content="2022-07-29T02:33:18.277Z">
 <meta property="article:author" content="YuXingZh">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181918.png">
@@ -222,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          2.8k 字
         
       </span>
     
@@ -233,7 +235,7 @@
         
         
         
-          10 分钟
+          23 分钟
         
       </span>
     
@@ -342,7 +344,64 @@
 <p><strong>selector 的作用就是配合一个线程来管理多个 channel（fileChannel因为是阻塞式的，所以无法使用selector）</strong>，获取这些 channel 上发生的<strong>事件</strong>，这些 channel 工作在<strong>非阻塞模式</strong>下，当一个channel中没有执行任务时，可以去执行其他channel中的任务。<strong>适合连接数多，但流量较少的场景</strong></p>
 <p><a target="_blank" rel="noopener" href="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181947.png"><img src="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20210418181947.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
 <p>若事件未就绪，调用 selector 的 select() 方法会阻塞线程，直到 channel 发生了就绪事件。这些事件就绪后，select 方法就会返回这些事件交给 thread 来处理</p>
-<h2 id="2、ByteBuffer"><a href="#2、ByteBuffer" class="headerlink" title="2、ByteBuffer"></a>2、ByteBuffer</h2>
+<h2 id="2、ByteBuffer"><a href="#2、ByteBuffer" class="headerlink" title="2、ByteBuffer"></a>2、ByteBuffer</h2><h3 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h3><h4 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h4><ul>
+<li><p>向 buffer 写入数据，例如调用 channel.read(buffer)</p>
+</li>
+<li><p>调用 flip() 切换至</p>
+<p>读模式</p>
+<ul>
+<li><strong>flip会使得buffer中的limit变为position，position变为0</strong></li>
+</ul>
+</li>
+<li><p>从 buffer 读取数据，例如调用 buffer.get()</p>
+</li>
+<li><p>调用 clear() 或者compact()切换至</p>
+<p>写模式</p>
+<ul>
+<li>调用clear()方法时<strong>position&#x3D;0，limit变为capacity</strong></li>
+<li>调用compact()方法时，<strong>会将缓冲区中的未读数据压缩到缓冲区前面</strong></li>
+</ul>
+</li>
+<li><p>重复以上步骤</p>
+</li>
+</ul>
+<p><strong>使用ByteBuffer读取文件中的内容</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestByteBuffer</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 获得FileChannel</span><br>        <span class="hljs-keyword">try</span> (<span class="hljs-type">FileChannel</span> <span class="hljs-variable">channel</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(<span class="hljs-string">&quot;stu.txt&quot;</span>).getChannel()) &#123;<br>            <span class="hljs-comment">// 获得缓冲区</span><br>            <span class="hljs-type">ByteBuffer</span> <span class="hljs-variable">buffer</span> <span class="hljs-operator">=</span> ByteBuffer.allocate(<span class="hljs-number">10</span>);<br>            <span class="hljs-type">int</span> <span class="hljs-variable">hasNext</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>            <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">builder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();<br>            <span class="hljs-keyword">while</span>((hasNext = channel.read(buffer)) &gt; <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-comment">// 切换模式 limit=position, position=0</span><br>                buffer.flip();<br>                <span class="hljs-comment">// 当buffer中还有数据时，获取其中的数据</span><br>                <span class="hljs-keyword">while</span>(buffer.hasRemaining()) &#123;<br>                    builder.append((<span class="hljs-type">char</span>)buffer.get());<br>                &#125;<br>                <span class="hljs-comment">// 切换模式 position=0, limit=capacity</span><br>                buffer.clear();<br>            &#125;<br>            System.out.println(builder.toString());<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>        &#125;<br>    &#125;<br>&#125;Copy<br></code></pre></td></tr></table></figure>
+
+<p>打印结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">0123456789abcdef<br></code></pre></td></tr></table></figure>
+
+<h3 id="核心属性"><a href="#核心属性" class="headerlink" title="核心属性"></a>核心属性</h3><p>字节缓冲区的父类Buffer中有几个核心属性，如下</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-comment">// Invariants: mark &lt;= position &lt;= limit &lt;= capacity</span><br><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> mark = <span class="hljs-number">-1</span>;<br><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> position = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> limit;<br><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;Copy<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>capacity</strong>：缓冲区的容量。通过构造函数赋予，一旦设置，无法更改</li>
+<li><strong>limit</strong>：缓冲区的界限。位于limit 后的数据不可读写。缓冲区的限制不能为负，并且<strong>不能大于其容量</strong></li>
+<li><strong>position</strong>：<strong>下一个</strong>读写位置的索引（类似PC）。缓冲区的位置不能为负，并且<strong>不能大于limit</strong></li>
+<li><strong>mark</strong>：记录当前position的值。<strong>position被改变后，可以通过调用reset() 方法恢复到mark的位置。</strong></li>
+</ul>
+<p>以上四个属性必须满足以下要求</p>
+<p><strong>mark &lt;&#x3D; position &lt;&#x3D; limit &lt;&#x3D; capacity</strong></p>
+<h3 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h3><h4 id="put-方法"><a href="#put-方法" class="headerlink" title="put()方法"></a>put()方法</h4><ul>
+<li>put()方法可以将一个数据放入到缓冲区中。</li>
+<li>进行该操作后，postition的值会+1，指向下一个可以放入的位置。capacity &#x3D; limit ，为缓冲区容量的值。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145709.png"><img src="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145709.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h4 id="flip-方法"><a href="#flip-方法" class="headerlink" title="flip()方法"></a>flip()方法</h4><ul>
+<li>flip()方法会<strong>切换对缓冲区的操作模式</strong>，由写-&gt;读 &#x2F; 读-&gt;写</li>
+<li>进行该操作后<ul>
+<li>如果是写模式-&gt;读模式，position &#x3D; 0 ， limit 指向最后一个元素的下一个位置，capacity不变</li>
+<li>如果是读-&gt;写，则恢复为put()方法中的值</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145753.png"><img src="https://nyimapicture.oss-cn-beijing.aliyuncs.com/img/20201109145753.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<h4 id="get-方法"><a href="#get-方法" class="headerlink" title="get()方法"></a>get()方法</h4><ul>
+<li>get()方法会读取缓冲区中的一个值</li>
+<li>进行该操作后，position会+1，如果超过了limit则会抛出异常</li>
+<li><strong>注意：get(i)方法不会改变position的值</strong></li>
+</ul>
+
                 
               </div>
             
