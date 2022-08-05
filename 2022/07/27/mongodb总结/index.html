@@ -16,15 +16,15 @@
   <meta name="author" content="YuXingZh">
   <meta name="keywords" content="">
   
-    <meta name="description" content="基础MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。">
+    <meta name="description" content="基础MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。 BSON( Binary Serialized Document Format) 是一种二进制形式的存储格式，采用了类似于 C 语言结构体的名称、对表示方法，支持内嵌的文档对象和数组对象，但是BSON有JSON没有的一些数据类型，如Date和BinDa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongodb总结">
 <meta property="og:url" content="https://alittlebitcool.github.io/2022/07/27/mongodb%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="基础MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。">
+<meta property="og:description" content="基础MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。 BSON( Binary Serialized Document Format) 是一种二进制形式的存储格式，采用了类似于 C 语言结构体的名称、对表示方法，支持内嵌的文档对象和数组对象，但是BSON有JSON没有的一些数据类型，如Date和BinDa">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-27T02:12:26.000Z">
-<meta property="article:modified_time" content="2022-07-27T02:33:41.124Z">
+<meta property="article:modified_time" content="2022-08-02T07:32:49.090Z">
 <meta property="article:author" content="YuXingZh">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -218,7 +218,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          73 字
+          588 字
         
       </span>
     
@@ -229,7 +229,7 @@
         
         
         
-          1 分钟
+          5 分钟
         
       </span>
     
@@ -273,6 +273,10 @@
               <div class="markdown-body">
                 
                 <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。</p>
+<p>BSON( Binary Serialized Document Format) 是一种<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E4%BA%8C%E8%BF%9B%E5%88%B6&spm=1001.2101.3001.7020">二进制</a>形式的存储格式，采用了类似于 C 语言结构体的名称、对表示方法，支持内嵌的文档对象和数组对象，但是BSON有JSON没有的一些数据类型，如Date和BinData类型。具有轻量性、可遍历性、高效性的特点，可以有效描述非结构化数据和结构化数据。</p>
+<p>BSON可以做为网络数据交换的一种存储形式，这个有点类似于Google的Protocol Buffer，但是BSON是一种schema-less的存储形式，它的优点是灵活性高，但它的缺点是空间利用率不是很理想。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    title<span class="hljs-punctuation">:</span><span class="hljs-string">&quot;MongoDB&quot;</span><span class="hljs-punctuation">,</span><br>    last_editor<span class="hljs-punctuation">:</span><span class="hljs-string">&quot;192.168.1.122&quot;</span><span class="hljs-punctuation">,</span><br>    last_modified<span class="hljs-punctuation">:</span>new Date(<span class="hljs-string">&quot;27/06/2011&quot;</span>)<span class="hljs-punctuation">,</span><br>    body<span class="hljs-punctuation">:</span><span class="hljs-string">&quot;MongoDB introduction&quot;</span><span class="hljs-punctuation">,</span><br>    categories<span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Database&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;NoSQL&quot;</span><span class="hljs-punctuation">,</span><span class="hljs-string">&quot;BSON&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    revieved<span class="hljs-punctuation">:</span><span class="hljs-keyword">false</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
