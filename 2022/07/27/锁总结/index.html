@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/640%20%285%29.jpg">
 <meta property="og:image" content="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/640%20%286%29.jpg">
 <meta property="article:published_time" content="2022-07-27T09:31:50.000Z">
-<meta property="article:modified_time" content="2022-07-29T09:28:18.876Z">
+<meta property="article:modified_time" content="2022-08-05T07:14:26.119Z">
 <meta property="article:author" content="YuXingZh">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/%E9%94%81%E6%80%BB%E7%BB%93.jpg">
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9k 字
+          10k 字
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          75 分钟
+          86 分钟
         
       </span>
     
@@ -399,6 +399,20 @@
 <p><img src="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/640%20%286%29.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>之前我们说过ReentrantLock和synchronized都是重入锁，那么我们通过重入锁ReentrantLock以及非可重入锁NonReentrantLock的源码来对比分析一下为什么非可重入锁在重复调用同步资源时会出现死锁。</p>
 <p>首先ReentrantLock和NonReentrantLock都继承父类AQS，其父类AQS中维护了一个同步状态status来计数重入次数，status初始值为0。</p>
+<p>当线程尝试获取锁时，可重入锁先尝试获取并更新status值，如果status &#x3D;&#x3D; 0表示没有其他线程在执行同步代码，则把status置为1，当前线程开始执行。如果status !&#x3D; 0，则判断当前线程是否是获取到这个锁的线程，如果是的话执行status+1，且当前线程可以再次获取锁。释放锁时，可重入锁同样先获取当前status的值，在当前线程是持有锁的线程的前提下。如果status-1 &#x3D;&#x3D; 0，则表示当前线程所有重复获取锁的操作都已经执行完毕，然后该线程才会真正释放锁。</p>
+<p>当线程尝试获取锁时，非可重入锁是直接去获取并尝试更新当前status的值，如果status !&#x3D; 0的话会导致其获取锁失败，当前线程阻塞。释放锁时，非可重入锁则是在确定当前线程是持有锁的线程之后，直接将status置为0，将锁释放。</p>
+<p>可重入锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryRelease</span><span class="hljs-params">(<span class="hljs-type">int</span> releases)</span> &#123;<br>	<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> getState() - releases;<br>	<span class="hljs-keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread()) &#123;<br>		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalMonitorStateException</span>();<br>	&#125;<br>	<br>	<span class="hljs-type">boolean</span> <span class="hljs-variable">free</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-comment">// 释放锁先判断当前线程是否已占有锁的线程，再判断status为0才释放锁</span><br>	<span class="hljs-keyword">if</span> (c == <span class="hljs-number">0</span>) &#123;<br>		free = <span class="hljs-literal">true</span>;<br>		setExclisiveOnwerThread(<span class="hljs-literal">null</span>);<br>	&#125;<br>	<br>	setState(c);<br>	<span class="hljs-keyword">return</span> free;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>非可重入锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryRelease</span><span class="hljs-params">(<span class="hljs-type">int</span> releases)</span> &#123;<br>	<span class="hljs-keyword">if</span> (Thread.currentThread() != <span class="hljs-built_in">this</span>.onwer) &#123;<br>		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalMonitorStateException</span>();<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-built_in">this</span>.owner = <span class="hljs-literal">null</span>;<br>		<span class="hljs-built_in">this</span>.setState(<span class="hljs-number">0</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-独享锁-VS-共享锁"><a href="#6-独享锁-VS-共享锁" class="headerlink" title="6. 独享锁 VS 共享锁"></a><strong>6. 独享锁 VS 共享锁</strong></h3><p>独享锁和共享锁同样是一种概念。我们先介绍一下具体的概念，然后通过ReentrantLock和ReentrantReadWriteLock的源码来介绍独享锁和共享锁。</p>
+<p>独享锁也叫排他锁，是指该锁一次只能被一个线程所持有。如果线程T对数据A加上排它锁后，则其他线程不能再对A加任何类型的锁。获得排它锁的线程即能读数据又能修改数据。JDK中的synchronized和JUC中Lock的实现类就是互斥锁。</p>
+<p>共享锁是指该锁可被多个线程所持有。如果线程T对数据A加上共享锁后，则其他线程只能对A再加共享锁，不能加排它锁。获得共享锁的线程只能读数据，不能修改数据。</p>
+<p>独享锁与共享锁也是通过AQS来实现的，通过实现不同的方法，来实现独享或者共享。</p>
 
                 
               </div>
