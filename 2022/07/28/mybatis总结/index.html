@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Mybatis总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="缓存一级缓存每当我们使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话。 在对数据库的一次会话中，我们有可能会反复地执行完全相同的查询语句，如果不采取一些措施的话，每一次查询都会查询一次数据库,而我们在极短的时间内做了完全相同的查询，那么它们的结果极有可能完全相同，由于查询一次数据库的代价很大，这有可能造成很大的资源浪费。 为了解决这一问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis总结">
+<meta property="og:url" content="https://alittlebitcool.github.io/2022/07/28/mybatis%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="YuXingZh Blog">
+<meta property="og:description" content="缓存一级缓存每当我们使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话。 在对数据库的一次会话中，我们有可能会反复地执行完全相同的查询语句，如果不采取一些措施的话，每一次查询都会查询一次数据库,而我们在极短的时间内做了完全相同的查询，那么它们的结果极有可能完全相同，由于查询一次数据库的代价很大，这有可能造成很大的资源浪费。 为了解决这一问">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2022-07-28T08:20:49.000Z">
+<meta property="article:modified_time" content="2025-03-01T07:56:58.093Z">
+<meta property="article:author" content="YuXingZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Mybatis总结",
+  "url": "https://alittlebitcool.github.io/2022/07/28/mybatis%E6%80%BB%E7%BB%93/",
+  "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
+  "datePublished": "2022-07-28T08:20:49.000Z",
+  "dateModified": "2025-03-01T07:56:58.093Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "YuXingZh",
+      "url": "https://alittlebitcool.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://alittlebitcool.github.io/2022/07/28/mybatis%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Mybatis总结',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Mybatis总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Mybatis总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-28T08:20:49.000Z" title="发表于 2022-07-28 16:20:49">2022-07-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-01T07:56:58.093Z" title="更新于 2025-03-01 15:56:58">2025-03-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/mybatis/">mybatis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><h3 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h3><p>每当我们使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话。</p>
+<p>在对数据库的一次会话中，我们有可能会反复地执行完全相同的查询语句，如果不采取一些措施的话，每一次查询都会查询一次数据库,而我们在极短的时间内做了完全相同的查询，那么它们的结果极有可能完全相同，由于查询一次数据库的代价很大，这有可能造成很大的资源浪费。</p>
+<p>为了解决这一问题，减少资源的浪费，MyBatis会在表示会话的SqlSession对象中建立一个简单的缓存，将每次查询到的结果结果缓存起来，当下次查询的时候，如果判断先前有个完全一样的查询，会直接从缓存中直接将结果取出，返回给用户，不需要再进行一次数据库查询了。</p>
+<p>如下图所示，MyBatis一次会话: 一个SqlSession对象中创建一个本地缓存(local cache)，对于每一次查询，都会尝试根据查询的条件去本地缓存中查找是否在缓存中，如果在缓存中，就直接从缓存中取出，然后返回给用户；否则，从数据库读取数据，将查询结果存入缓存并返回给用户。</p>
+<p><img src="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/mybatis-y-cache-1.png" alt="img"></p>
+<p>对于会话（Session）级别的数据缓存，我们称之为一级数据缓存，简称一级缓存。</p>
+<h3 id="MyBatis中的一级缓存是怎样组织的？"><a href="#MyBatis中的一级缓存是怎样组织的？" class="headerlink" title="MyBatis中的一级缓存是怎样组织的？"></a>MyBatis中的一级缓存是怎样组织的？</h3><p>即SqlSession中的缓存是怎样组织的？由于MyBatis使用SqlSession对象表示一次数据库的会话，那么，对于会话级别的一级缓存也应该是在SqlSession中控制的。</p>
+<p>实际上, MyBatis只是一个MyBatis对外的接口，SqlSession将它的工作交给了Executor执行器这个角色来完成，负责完成对数据库的各种操作。当创建了一个SqlSession对象时，MyBatis会为这个SqlSession对象创建一个新的Executor执行器，而缓存信息就被维护在这个Executor执行器中，MyBatis将缓存和对缓存相关的操作封装成了Cache接口中。SqlSession、Executor、Cache之间的关系如下列类图所示：</p>
+<p><img src="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/mybatis-y-cache-2.png" alt="img"></p>
+<p>如上述的类图所示，Executor接口的实现类BaseExecutor中拥有一个Cache接口的实现类PerpetualCache，则对于BaseExecutor对象而言，它将使用PerpetualCache对象维护缓存。</p>
+<p>综上，SqlSession对象、Executor对象、Cache对象之间的关系如下图所示：</p>
+<p><img src="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/mybatis-y-cache-3.png" alt="img"></p>
+<p>由于Session级别的一级缓存实际上就是使用PerpetualCache维护的，那么PerpetualCache是怎样实现的呢？</p>
+<p>PerpetualCache实现原理其实很简单，其内部就是通过一个简单的<code>HashMap&lt;k,v&gt;</code> 来实现的，没有其他的任何限制。如下是PerpetualCache的实现代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.apache.ibatis.cache.impl;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;  </span><br><span class="line"><span class="keyword">import</span> java.util.Map;  </span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReadWriteLock;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.cache.Cache;  </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.cache.CacheException;  </span><br><span class="line">  </span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 使用简单的HashMap来维护缓存 </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PerpetualCache</span> <span class="keyword">implements</span> <span class="title class_">Cache</span> &#123;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String id;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Object, Object&gt;();  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">PerpetualCache</span><span class="params">(String id)</span> &#123;  </span><br><span class="line">    <span class="built_in">this</span>.id = id;  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> String <span class="title function_">getId</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> id;  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getSize</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> cache.size();  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">putObject</span><span class="params">(Object key, Object value)</span> &#123;  </span><br><span class="line">    cache.put(key, value);  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> Object <span class="title function_">getObject</span><span class="params">(Object key)</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> cache.get(key);  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> Object <span class="title function_">removeObject</span><span class="params">(Object key)</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> cache.remove(key);  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;  </span><br><span class="line">    cache.clear();  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> ReadWriteLock <span class="title function_">getReadWriteLock</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (getId() == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CacheException</span>(<span class="string">&quot;Cache instances require an ID.&quot;</span>);  </span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span> == o) <span class="keyword">return</span> <span class="literal">true</span>;  </span><br><span class="line">    <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Cache)) <span class="keyword">return</span> <span class="literal">false</span>;  </span><br><span class="line">  </span><br><span class="line">    <span class="type">Cache</span> <span class="variable">otherCache</span> <span class="operator">=</span> (Cache) o;  </span><br><span class="line">    <span class="keyword">return</span> getId().equals(otherCache.getId());  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (getId() == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CacheException</span>(<span class="string">&quot;Cache instances require an ID.&quot;</span>);  </span><br><span class="line">    <span class="keyword">return</span> getId().hashCode();  </span><br><span class="line">  &#125;  </span><br><span class="line">  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="一级缓存的生命周期有多长？"><a href="#一级缓存的生命周期有多长？" class="headerlink" title="一级缓存的生命周期有多长？"></a>一级缓存的生命周期有多长？</h3><p>MyBatis在开启一个数据库会话时，会创建一个新的SqlSession对象，SqlSession对象中会有一个新的Executor对象，Executor对象中持有一个新的PerpetualCache对象；当会话结束时，SqlSession对象及其内部的Executor对象还有PerpetualCache对象也一并释放掉。</p>
+<ul>
+<li><p>如果SqlSession调用了close()方法，会释放掉一级缓存PerpetualCache对象，一级缓存将不可用；</p>
+</li>
+<li><p>如果SqlSession调用了clearCache()，会清空PerpetualCache对象中的数据，但是该对象仍可使用；</p>
+</li>
+<li><p>SqlSession中执行了任何一个update操作(update()、delete()、insert()) ，都会清空PerpetualCache对象的数据，但是该对象可以继续使用；</p>
+</li>
+</ul>
+<h3 id="SqlSession-一级缓存的工作流程"><a href="#SqlSession-一级缓存的工作流程" class="headerlink" title="SqlSession 一级缓存的工作流程"></a>SqlSession 一级缓存的工作流程</h3><ul>
+<li>对于某个查询，根据statementId,params,rowBounds来构建一个key值，根据这个key值去缓存Cache中取出对应的key值存储的缓存结果；</li>
+<li>判断从Cache中根据特定的key值取的数据数据是否为空，即是否命中；</li>
+<li>如果命中，则直接将缓存结果返回；</li>
+<li>如果没命中：<ul>
+<li>去数据库中查询数据，得到查询结果；</li>
+<li>将key和查询到的结果分别作为key,value对存储到Cache中；</li>
+<li>将查询结果返回；</li>
+</ul>
+</li>
+<li>结束。</li>
+</ul>
+<p><img src="https://yuxingzh.oss-cn-hangzhou.aliyuncs.com/img/mybatis-y-cache-5.png" alt="img"></p>
+<h3 id="Cache接口的设计以及CacheKey的定义"><a href="#Cache接口的设计以及CacheKey的定义" class="headerlink" title="Cache接口的设计以及CacheKey的定义"></a>Cache接口的设计以及CacheKey的定义</h3><p>如下图所示，MyBatis定义了一个org.apache.ibatis.cache.Cache接口作为其Cache提供者的SPI(Service Provider Interface) ，所有的MyBatis内部的Cache缓存，都应该实现这一接口。MyBatis定义了一个PerpetualCache实现类实现了Cache接口，实际上，在SqlSession对象里的Executor对象内维护的Cache类型实例对象，就是PerpetualCache子类创建的。</p>
+<p>（MyBatis内部还有很多Cache接口的实现，一级缓存只会涉及到这一个PerpetualCache子类，Cache的其他实现将会放到二级缓存中介绍）。</p>
+<p><img src="https://pdai-1257820000.cos.ap-beijing.myqcloud.com/pdai.tech/public/_images/mybatis/mybatis-y-cache-6.png" alt="img"></p>
+<p>我们知道，Cache最核心的实现其实就是一个Map，将本次查询使用的特征值作为key，将查询结果作为value存储到Map中。现在最核心的问题出现了：怎样来确定一次查询的特征值？换句话说就是：怎样判断某两次查询是完全相同的查询？也可以这样说：如何确定Cache中的key值？</p>
+<p>MyBatis认为，对于两次查询，如果以下条件都完全一样，那么就认为它们是完全相同的两次查询：</p>
+<ul>
+<li>传入的 statementId</li>
+<li>查询时要求的结果集中的结果范围 （结果的范围通过rowBounds.offset和rowBounds.limit表示）</li>
+<li>这次查询所产生的最终要传递给JDBC java.sql.Preparedstatement的Sql语句字符串（boundSql.getSql() ）</li>
+<li>传递给java.sql.Statement要设置的参数值</li>
+</ul>
+<p><strong>现在分别解释上述四个条件</strong>：</p>
+<ul>
+<li>传入的statementId，对于MyBatis而言，你要使用它，必须需要一个statementId，它代表着你将执行什么样的Sql；</li>
+<li>MyBatis自身提供的分页功能是通过RowBounds来实现的，它通过rowBounds.offset和rowBounds.limit来过滤查询出来的结果集，这种分页功能是基于查询结果的再过滤，而不是进行数据库的物理分页；</li>
+<li>由于MyBatis底层还是依赖于JDBC实现的，那么，对于两次完全一模一样的查询，MyBatis要保证对于底层JDBC而言，也是完全一致的查询才行。而对于JDBC而言，两次查询，只要传入给JDBC的SQL语句完全一致，传入的参数也完全一致，就认为是两次查询是完全一致的。</li>
+<li>上述的第3个条件正是要求保证传递给JDBC的SQL语句完全一致；第4条则是保证传递给JDBC的参数也完全一致；即3、4两条MyBatis最本质的要求就是：调用JDBC的时候，传入的SQL语句要完全相同，传递给JDBC的参数值也要完全相同。</li>
+</ul>
+<p>综上所述,CacheKey由以下条件决定：<strong>statementId + rowBounds + 传递给JDBC的SQL + 传递给JDBC的参数值</strong>；</p>
+<ul>
+<li><strong>CacheKey的创建</strong></li>
+</ul>
+<p>对于每次的查询请求，Executor都会根据传递的参数信息以及动态生成的SQL语句，将上面的条件根据一定的计算规则，创建一个对应的CacheKey对象。</p>
+<p>我们知道创建CacheKey的目的，就两个：</p>
+<ul>
+<li>根据CacheKey作为key,去Cache缓存中查找缓存结果；</li>
+<li>如果查找缓存命中失败，则通过此CacheKey作为key，将从数据库查询到的结果作为value，组成key,value对存储到Cache缓存中；</li>
+</ul>
+<p>CacheKey的构建被放置到了Executor接口的实现类BaseExecutor中，定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 所属类:  org.apache.ibatis.executor.BaseExecutor </span></span><br><span class="line"><span class="comment"> * 功能   :   根据传入信息构建CacheKey </span></span><br><span class="line"><span class="comment"> */</span>  </span><br><span class="line"><span class="keyword">public</span> CacheKey <span class="title function_">createCacheKey</span><span class="params">(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql)</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (closed) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ExecutorException</span>(<span class="string">&quot;Executor was closed.&quot;</span>);  </span><br><span class="line">    <span class="type">CacheKey</span> <span class="variable">cacheKey</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CacheKey</span>();  </span><br><span class="line">    <span class="comment">//1.statementId  </span></span><br><span class="line">    cacheKey.update(ms.getId());  </span><br><span class="line">    <span class="comment">//2. rowBounds.offset  </span></span><br><span class="line">    cacheKey.update(rowBounds.getOffset());  </span><br><span class="line">    <span class="comment">//3. rowBounds.limit  </span></span><br><span class="line">    cacheKey.update(rowBounds.getLimit());  </span><br><span class="line">    <span class="comment">//4. SQL语句  </span></span><br><span class="line">    cacheKey.update(boundSql.getSql());  </span><br><span class="line">    <span class="comment">//5. 将每一个要传递给JDBC的参数值也更新到CacheKey中  </span></span><br><span class="line">    List&lt;ParameterMapping&gt; parameterMappings = boundSql.getParameterMappings();  </span><br><span class="line">    <span class="type">TypeHandlerRegistry</span> <span class="variable">typeHandlerRegistry</span> <span class="operator">=</span> ms.getConfiguration().getTypeHandlerRegistry();  </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; parameterMappings.size(); i++) &#123; <span class="comment">// mimic DefaultParameterHandler logic  </span></span><br><span class="line">        <span class="type">ParameterMapping</span> <span class="variable">parameterMapping</span> <span class="operator">=</span> parameterMappings.get(i);  </span><br><span class="line">        <span class="keyword">if</span> (parameterMapping.getMode() != ParameterMode.OUT) &#123;  </span><br><span class="line">            Object value;  </span><br><span class="line">            <span class="type">String</span> <span class="variable">propertyName</span> <span class="operator">=</span> parameterMapping.getProperty();  </span><br><span class="line">            <span class="keyword">if</span> (boundSql.hasAdditionalParameter(propertyName)) &#123;  </span><br><span class="line">                value = boundSql.getAdditionalParameter(propertyName);  </span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (parameterObject == <span class="literal">null</span>) &#123;  </span><br><span class="line">                value = <span class="literal">null</span>;  </span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) &#123;  </span><br><span class="line">                value = parameterObject;  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                <span class="type">MetaObject</span> <span class="variable">metaObject</span> <span class="operator">=</span> configuration.newMetaObject(parameterObject);  </span><br><span class="line">                value = metaObject.getValue(propertyName);  </span><br><span class="line">            &#125;  </span><br><span class="line">            <span class="comment">//将每一个要传递给JDBC的参数值也更新到CacheKey中  </span></span><br><span class="line">            cacheKey.update(value);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> cacheKey;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><strong>CacheKey的hashcode生成算法</strong></li>
+</ul>
+<p>刚才已经提到，Cache接口的实现，本质上是使用的<code>HashMap&lt;k,v&gt;</code>,而构建CacheKey的目的就是为了作为<code>HashMap&lt;k,v&gt;</code>中的key值。而HashMap是通过key值的hashcode 来组织和存储的，那么，构建CacheKey的过程实际上就是构造其hashCode的过程。下面的代码就是CacheKey的核心hashcode生成算法，感兴趣的话可以看一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">update</span><span class="params">(Object object)</span> &#123;  </span><br><span class="line">    <span class="keyword">if</span> (object != <span class="literal">null</span> &amp;&amp; object.getClass().isArray()) &#123;  </span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> Array.getLength(object);  </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;  </span><br><span class="line">            <span class="type">Object</span> <span class="variable">element</span> <span class="operator">=</span> Array.get(object, i);  </span><br><span class="line">            doUpdate(element);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        doUpdate(object);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doUpdate</span><span class="params">(Object object)</span> &#123;  </span><br><span class="line"> </span><br><span class="line">    <span class="comment">//1. 得到对象的hashcode;    </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">baseHashCode</span> <span class="operator">=</span> object == <span class="literal">null</span> ? <span class="number">1</span> : object.hashCode();  </span><br><span class="line">    <span class="comment">//对象计数递增  </span></span><br><span class="line">    count++;  </span><br><span class="line">    checksum += baseHashCode;  </span><br><span class="line">    <span class="comment">//2. 对象的hashcode 扩大count倍  </span></span><br><span class="line">    baseHashCode *= count;  </span><br><span class="line">    <span class="comment">//3. hashCode * 拓展因子（默认37）+拓展扩大后的对象hashCode值  </span></span><br><span class="line">    hashcode = multiplier * hashcode + baseHashCode;  </span><br><span class="line">    updateList.add(object);  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>MyBatis认为的完全相同的查询，不是指使用sqlSession查询时传递给算起来Session的所有参数值完完全全相同，你只要保证statementId，rowBounds,最后生成的SQL语句，以及这个SQL语句所需要的参数完全一致就可以了。</p>
+<h3 id="¶-一级缓存的性能分析"><a href="#¶-一级缓存的性能分析" class="headerlink" title="¶ 一级缓存的性能分析"></a><a href="#%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90">¶</a> 一级缓存的性能分析</h3><ul>
+<li><strong>MyBatis对会话（Session）级别的一级缓存设计的比较简单，就简单地使用了HashMap来维护，并没有对HashMap的容量和大小进行限制</strong></li>
+</ul>
+<p>读者有可能就觉得不妥了：如果我一直使用某一个SqlSession对象查询数据，这样会不会导致HashMap太大，而导致 java.lang.OutOfMemoryError错误啊？ 读者这么考虑也不无道理，不过MyBatis的确是这样设计的。</p>
+<p>MyBatis这样设计也有它自己的理由：</p>
+<ul>
+<li>一般而言SqlSession的生存时间很短。一般情况下使用一个SqlSession对象执行的操作不会太多，执行完就会消亡；</li>
+<li>对于某一个SqlSession对象而言，只要执行update操作（update、insert、delete），都会将这个SqlSession对象中对应的一级缓存清空掉，所以一般情况下不会出现缓存过大，影响JVM内存空间的问题；</li>
+<li>可以手动地释放掉SqlSession对象中的缓存。</li>
+<li><strong>一级缓存是一个粗粒度的缓存，没有更新缓存和缓存过期的概念</strong></li>
+</ul>
+<p>MyBatis的一级缓存就是使用了简单的HashMap，MyBatis只负责将查询数据库的结果存储到缓存中去， 不会去判断缓存存放的时间是否过长、是否过期，因此也就没有对缓存的结果进行更新这一说了。</p>
+<p>根据一级缓存的特性，在使用的过程中，我认为应该注意：</p>
+<ul>
+<li>对于数据变化频率很大，并且需要高时效准确性的数据要求，我们使用SqlSession查询的时候，要控制好SqlSession的生存时间， SqlSession的生存时间越长，它其中缓存的数据有可能就越旧，从而造成和真实数据库的误差；同时对于这种情况，用户也可以手动地适时清空SqlSession中的缓存；</li>
+<li>对于只执行、并且频繁执行大范围的select操作的SqlSession对象，SqlSession对象的生存时间不应过长。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2022/07/28/mybatis%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2022/07/28/mybatis%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/07/28/NIO%E5%AD%A6%E4%B9%A0/" title="NIO学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">NIO学习</div></div><div class="info-2"><div class="info-item-1">本博客是根据黑马程序员Netty实战学习时所做的笔记 转自Netty学习之NIO基础 一、三大组件简介Channel与Buffer Java NIO系统的核心在于：通道(Channel)和缓冲区(Buffer)。通道表示打开到 IO 设备(例如：文件、套接字)的连接。若需要使用 NIO 系统，需要获取用于连接 IO...</div></div></div></a><a class="pagination-related" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">算法模板总结</div></div><div class="info-2"><div class="info-item-1">栈 队列 链表 哈希表 哈希数组 堆 优先队列 双端队列 可并堆 左偏堆 二分法 ​	基本二分查找模板 123456789101112131415// 适用于查找目标值是否存在，返回任意一个匹配的索引。public int binarySearch(int[] nums, int target) &#123;    int left = 0, right = nums.length - 1;    while (left &lt;= right) &#123;        int mid = left + (right - left) / 2;        if (nums[mid] == target) &#123;            return mid; // 找到目标值，返回索引        &#125; else if (nums[mid] &lt; target) &#123;            left = mid + 1; // 目标值在右半部分        &#125; else &#123;            right = mid -...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-number">1.</span> <span class="toc-text">缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="toc-number">1.1.</span> <span class="toc-text">一级缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%AD%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E6%98%AF%E6%80%8E%E6%A0%B7%E7%BB%84%E7%BB%87%E7%9A%84%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">MyBatis中的一级缓存是怎样组织的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%9C%89%E5%A4%9A%E9%95%BF%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">一级缓存的生命周期有多长？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SqlSession-%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">SqlSession 一级缓存的工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cache%E6%8E%A5%E5%8F%A3%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%BB%A5%E5%8F%8ACacheKey%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.5.</span> <span class="toc-text">Cache接口的设计以及CacheKey的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%B6-%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-number">1.6.</span> <span class="toc-text"> 一级缓存的性能分析</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-04T11:15:19.000Z" title="发表于 2025-03-04 19:15:19">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-04T11:15:16.000Z" title="发表于 2025-03-04 19:15:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-04T11:14:54.000Z" title="发表于 2025-03-04 19:14:54">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结">算法模板总结</a><time datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/07/28/mybatis%E6%80%BB%E7%BB%93/" title="Mybatis总结">Mybatis总结</a><time datetime="2022-07-28T08:20:49.000Z" title="发表于 2022-07-28 16:20:49">2022-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

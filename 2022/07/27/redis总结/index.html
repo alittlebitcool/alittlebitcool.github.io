@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>redis总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据类型Redis有5种数据类型，分别是：String、List、Set、Zset、Hash。 String​	字符串是二进制安全的，可以存任何数据如数字，字符串，jpg图片或者序列化的对象。最大长度为 512 兆字节。 ​	常用命令包括 ​	GET name ：获取存储在给定键中的值 GET name  ​	SET name value：设置存储在给定键中的值  ​	DEL name：删除存储在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis总结">
+<meta property="og:url" content="https://alittlebitcool.github.io/2022/07/27/redis%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="YuXingZh Blog">
+<meta property="og:description" content="数据类型Redis有5种数据类型，分别是：String、List、Set、Zset、Hash。 String​	字符串是二进制安全的，可以存任何数据如数字，字符串，jpg图片或者序列化的对象。最大长度为 512 兆字节。 ​	常用命令包括 ​	GET name ：获取存储在给定键中的值 GET name  ​	SET name value：设置存储在给定键中的值  ​	DEL name：删除存储在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2022-07-27T01:31:17.000Z">
+<meta property="article:modified_time" content="2025-03-01T07:56:58.094Z">
+<meta property="article:author" content="YuXingZh">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "redis总结",
+  "url": "https://alittlebitcool.github.io/2022/07/27/redis%E6%80%BB%E7%BB%93/",
+  "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
+  "datePublished": "2022-07-27T01:31:17.000Z",
+  "dateModified": "2025-03-01T07:56:58.094Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "YuXingZh",
+      "url": "https://alittlebitcool.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://alittlebitcool.github.io/2022/07/27/redis%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'redis总结',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">redis总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">redis总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-27T01:31:17.000Z" title="发表于 2022-07-27 09:31:17">2022-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-01T07:56:58.094Z" title="更新于 2025-03-01 15:56:58">2025-03-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/redis/">redis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>Redis有5种数据类型，分别是：String、List、Set、Zset、Hash。</p>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>​	字符串是二进制安全的，可以存任何数据如数字，字符串，jpg图片或者序列化的对象。最大长度为 512 兆字节。</p>
+<p>​	常用命令包括</p>
+<p>​	GET name ：获取存储在给定键中的值 GET name </p>
+<p>​	SET name value：设置存储在给定键中的值 </p>
+<p>​	DEL name：删除存储在给定键中的值 </p>
+<p>​	INCR key：将键存储的值加1</p>
+<p>​	DECR key：将键存储的值减1</p>
+<p>​	INCRBY key amount ：将键存储的值加上整数</p>
+<p>​	DECRBY key amount：将键存储的值减去整数</p>
+<p>​	用法：</p>
+<p>​	作为缓存层缓存数据，作为计数器进行计算，spring session + redis实现session共享。</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><h3 id="Zset"><a href="#Zset" class="headerlink" title="Zset"></a>Zset</h3><h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><p>​	如果缓存中的数据在某个时刻批量过期，导致大部分用户的请求都会直接落在数据库上，这种现象就叫作缓存击穿。</p>
+<h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><h3 id="缓存雪崩问题"><a href="#缓存雪崩问题" class="headerlink" title="缓存雪崩问题"></a>缓存雪崩问题</h3><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="1、缓存"><a href="#1、缓存" class="headerlink" title="1、缓存"></a><strong>1、缓存</strong></h3><p>String类型</p>
+<p>例如：热点数据缓存（例如报表、明星新闻），对象缓存、全页缓存、可以提升热点数据的访问数据。</p>
+<h3 id="2、数据共享分布式"><a href="#2、数据共享分布式" class="headerlink" title="2、数据共享分布式"></a><strong>2、数据共享分布式</strong></h3><p>String 类型，因为 Redis 是分布式的独立服务，可以在多个应用之间共享</p>
+<p>例如：分布式Session</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt; </span><br><span class="line"> &lt;groupId&gt;org.springframework.session&lt;/groupId&gt; </span><br><span class="line"> &lt;artifactId&gt;spring-session-data-redis&lt;/artifactId&gt; </span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3、分布式锁"><a href="#3、分布式锁" class="headerlink" title="3、分布式锁"></a><strong>3、分布式锁</strong></h3><p>String 类型setnx方法，只有不存在时才能添加成功，返回true</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static boolean getLock(String key) &#123;</span><br><span class="line">    Long flag = jedis.setnx(key, &quot;1&quot;);</span><br><span class="line">    if (flag == 1) &#123;</span><br><span class="line">        jedis.expire(key, 10);</span><br><span class="line">    &#125;</span><br><span class="line">    return flag == 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void releaseLock(String key) &#123;</span><br><span class="line">    jedis.del(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4、全局ID"><a href="#4、全局ID" class="headerlink" title="4、全局ID"></a><strong>4、全局ID</strong></h3><p>int类型，incrby，利用原子性</p>
+<p>incrby userid 1000</p>
+<p>分库分表的场景，一次性拿一段</p>
+<h3 id="5、计数器"><a href="#5、计数器" class="headerlink" title="5、计数器"></a><strong>5、计数器</strong></h3><p>int类型，incr方法</p>
+<p>例如：文章的阅读量、微博点赞数、允许一定的延迟，先写入Redis再定时同步到数据库</p>
+<h3 id="6、限流"><a href="#6、限流" class="headerlink" title="6、限流"></a><strong>6、限流</strong></h3><p>int类型，incr方法</p>
+<p>以访问者的ip和其他信息作为key，访问一次增加一次计数，超过次数则返回false</p>
+<h3 id="7、位统计"><a href="#7、位统计" class="headerlink" title="7、位统计"></a><strong>7、位统计</strong></h3><p>String类型的bitcount（1.6.6的bitmap数据结构介绍）</p>
+<p>字符是以8位二进制存储的</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">set k1 a</span><br><span class="line">setbit k1 6 1</span><br><span class="line">setbit k1 7 0</span><br><span class="line">get k1 </span><br><span class="line">/* 6 7 代表的a的二进制位的修改</span><br><span class="line">a 对应的ASCII码是97，转换为二进制数据是01100001</span><br><span class="line">b 对应的ASCII码是98，转换为二进制数据是01100010</span><br><span class="line"></span><br><span class="line">因为bit非常节省空间（1 MB=8388608 bit），可以用来做大数据量的统计。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>例如：在线用户统计，留存用户统计</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setbit onlineusers 01 </span><br><span class="line">setbit onlineusers 11 </span><br><span class="line">setbit onlineusers 20</span><br></pre></td></tr></table></figure>
+
+<p>支持按位与、按位或等等操作</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BITOPANDdestkeykey[key...] ，对一个或多个 key 求逻辑并，并将结果保存到 destkey 。       </span><br><span class="line">BITOPORdestkeykey[key...] ，对一个或多个 key 求逻辑或，并将结果保存到 destkey 。 </span><br><span class="line">BITOPXORdestkeykey[key...] ，对一个或多个 key 求逻辑异或，并将结果保存到 destkey 。 </span><br><span class="line">BITOPNOTdestkeykey ，对给定 key 求逻辑非，并将结果保存到 destkey 。</span><br></pre></td></tr></table></figure>
+
+<p>计算出7天都在线的用户</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BITOP &quot;AND&quot; &quot;7_days_both_online_users&quot; &quot;day_1_online_users&quot; &quot;day_2_online_users&quot; ...  &quot;day_7_online_users&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8、购物车"><a href="#8、购物车" class="headerlink" title="8、购物车"></a><strong>8、购物车</strong></h3><p>String 或hash。所有String可以做的hash都可以做</p>
+<ul>
+<li>key：用户id；field：商品id；value：商品数量。</li>
+<li>+1：hincr。-1：hdecr。删除：hdel。全选：hgetall。商品数：hlen。</li>
+</ul>
+<h3 id="9、用户消息时间线timeline"><a href="#9、用户消息时间线timeline" class="headerlink" title="9、用户消息时间线timeline"></a><strong>9、用户消息时间线timeline</strong></h3><p>list，双向链表，直接作为timeline就好了。插入有序</p>
+<h3 id="10、消息队列"><a href="#10、消息队列" class="headerlink" title="10、消息队列"></a><strong>10、消息队列</strong></h3><p>List提供了两个阻塞的弹出操作：blpop&#x2F;brpop，可以设置超时时间</p>
+<ul>
+<li>blpop：blpop key1 timeout 移除并获取列表的第一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</li>
+<li>brpop：brpop key1 timeout 移除并获取列表的最后一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止。</li>
+</ul>
+<p>上面的操作。其实就是java的阻塞队列。学习的东西越多。学习成本越低</p>
+<ul>
+<li>队列：先进先除：rpush blpop，左头右尾，右边进入队列，左边出队列</li>
+<li>栈：先进后出：rpush brpop</li>
+</ul>
+<h3 id="11、抽奖"><a href="#11、抽奖" class="headerlink" title="11、抽奖"></a><strong>11、抽奖</strong></h3><p>自带一个随机获得值</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spop myset</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="12、点赞、签到、打卡"><a href="#12、点赞、签到、打卡" class="headerlink" title="12、点赞、签到、打卡"></a><strong>12、点赞、签到、打卡</strong></h3><p>假如微博ID是t1001，用户ID是u3001</p>
+<p>用 like:t1001 来维护 t1001 这条微博的所有点赞用户</p>
+<ul>
+<li>点赞了这条微博：sadd like:t1001 u3001</li>
+<li>取消点赞：srem like:t1001 u3001</li>
+<li>是否点赞：sismember like:t1001 u3001</li>
+<li>点赞的所有用户：smembers like:t1001</li>
+<li>点赞数：scard like:t1001</li>
+</ul>
+<p>是不是比数据库简单多了。</p>
+<h3 id="13、商品标签"><a href="#13、商品标签" class="headerlink" title="13、商品标签"></a><strong>13、商品标签</strong></h3><p>用 tags:i5001 来维护商品所有的标签。</p>
+<ul>
+<li>sadd tags:i5001 画面清晰细腻</li>
+<li>sadd tags:i5001 真彩清晰显示屏</li>
+<li>sadd tags:i5001 流程至极</li>
+</ul>
+<h3 id="14、商品筛选"><a href="#14、商品筛选" class="headerlink" title="14、商品筛选"></a><strong>14、商品筛选</strong></h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 获取差集</span><br><span class="line">sdiff set1 set2</span><br><span class="line">// 获取交集（intersection ）</span><br><span class="line">sinter set1 set2</span><br><span class="line">// 获取并集</span><br><span class="line">sunion set1 set2</span><br></pre></td></tr></table></figure>
+
+<p>假如：iPhone11 上市了</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sadd brand:apple iPhone11</span><br><span class="line"></span><br><span class="line">sadd brand:ios iPhone11</span><br><span class="line"></span><br><span class="line">sad screensize:6.0-6.24 iPhone11</span><br><span class="line"></span><br><span class="line">sad screentype:lcd iPhone 11</span><br></pre></td></tr></table></figure>
+
+<p>赛选商品，苹果的、ios的、屏幕在6.0-6.24之间的，屏幕材质是LCD屏幕</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sinter brand:apple brand:ios screensize:6.0-6.24 screentype:lcd</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="15、用户关注、推荐模型"><a href="#15、用户关注、推荐模型" class="headerlink" title="15、用户关注、推荐模型"></a><strong>15、用户关注、推荐模型</strong></h3><p>follow 关注 fans 粉丝</p>
+<p>相互关注：</p>
+<ul>
+<li>sadd 1:follow 2</li>
+<li>sadd 2:fans 1</li>
+<li>sadd 1:fans 2</li>
+<li>sadd 2:follow 1</li>
+</ul>
+<p>我关注的人也关注了他(取交集)：</p>
+<ul>
+<li>sinter 1:follow 2:fans</li>
+</ul>
+<p>可能认识的人：</p>
+<ul>
+<li>用户1可能认识的人(差集)：sdiff 2:follow 1:follow</li>
+<li>用户2可能认识的人：sdiff 1:follow 2:follow</li>
+</ul>
+<h3 id="16、排行榜"><a href="#16、排行榜" class="headerlink" title="16、排行榜"></a><strong>16、排行榜</strong></h3><p>id 为6001 的新闻点击数加1：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zincrby hotNews:20190926 1 n6001</span><br></pre></td></tr></table></figure>
+
+<p>获取今天点击最多的15条：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrevrange hotNews:20190926 0 15 withscores</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2022/07/27/redis%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2022/07/27/redis%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/07/27/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" title="设计原则"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">设计原则</div></div><div class="info-2"><div class="info-item-1">1.单一职责原则单一职责原则（Single Responsibility...</div></div></div></a><a class="pagination-related" href="/2022/07/27/mongodb%E6%80%BB%E7%BB%93/" title="mongodb总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">mongodb总结</div></div><div class="info-2"><div class="info-item-1">基础MongoDB是面向文档的NoSQL数据库，用于大量数据存储。MongoDB是一个在2000年代中期问世的数据库。属于NoSQL数据库的类别。 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-number">1.1.</span> <span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List"><span class="toc-number">1.2.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-number">1.3.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Zset"><span class="toc-number">1.4.</span> <span class="toc-text">Zset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash"><span class="toc-number">1.5.</span> <span class="toc-text">Hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-number">2.1.</span> <span class="toc-text">缓存击穿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-number">2.2.</span> <span class="toc-text">缓存穿透</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%E9%97%AE%E9%A2%98"><span class="toc-number">2.3.</span> <span class="toc-text">缓存雪崩问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.</span> <span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%BC%93%E5%AD%98"><span class="toc-number">3.1.</span> <span class="toc-text">1、缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E5%85%B1%E4%BA%AB%E5%88%86%E5%B8%83%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">2、数据共享分布式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-number">3.3.</span> <span class="toc-text">3、分布式锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%85%A8%E5%B1%80ID"><span class="toc-number">3.4.</span> <span class="toc-text">4、全局ID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">3.5.</span> <span class="toc-text">5、计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E9%99%90%E6%B5%81"><span class="toc-number">3.6.</span> <span class="toc-text">6、限流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E4%BD%8D%E7%BB%9F%E8%AE%A1"><span class="toc-number">3.7.</span> <span class="toc-text">7、位统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E8%B4%AD%E7%89%A9%E8%BD%A6"><span class="toc-number">3.8.</span> <span class="toc-text">8、购物车</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E7%94%A8%E6%88%B7%E6%B6%88%E6%81%AF%E6%97%B6%E9%97%B4%E7%BA%BFtimeline"><span class="toc-number">3.9.</span> <span class="toc-text">9、用户消息时间线timeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">3.10.</span> <span class="toc-text">10、消息队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E6%8A%BD%E5%A5%96"><span class="toc-number">3.11.</span> <span class="toc-text">11、抽奖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12%E3%80%81%E7%82%B9%E8%B5%9E%E3%80%81%E7%AD%BE%E5%88%B0%E3%80%81%E6%89%93%E5%8D%A1"><span class="toc-number">3.12.</span> <span class="toc-text">12、点赞、签到、打卡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13%E3%80%81%E5%95%86%E5%93%81%E6%A0%87%E7%AD%BE"><span class="toc-number">3.13.</span> <span class="toc-text">13、商品标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14%E3%80%81%E5%95%86%E5%93%81%E7%AD%9B%E9%80%89"><span class="toc-number">3.14.</span> <span class="toc-text">14、商品筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15%E3%80%81%E7%94%A8%E6%88%B7%E5%85%B3%E6%B3%A8%E3%80%81%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.15.</span> <span class="toc-text">15、用户关注、推荐模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16%E3%80%81%E6%8E%92%E8%A1%8C%E6%A6%9C"><span class="toc-number">3.16.</span> <span class="toc-text">16、排行榜</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-04T11:15:19.000Z" title="发表于 2025-03-04 19:15:19">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-04T11:15:16.000Z" title="发表于 2025-03-04 19:15:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-04T11:14:54.000Z" title="发表于 2025-03-04 19:14:54">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结">算法模板总结</a><time datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/07/28/mybatis%E6%80%BB%E7%BB%93/" title="Mybatis总结">Mybatis总结</a><time datetime="2022-07-28T08:20:49.000Z" title="发表于 2022-07-28 16:20:49">2022-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
