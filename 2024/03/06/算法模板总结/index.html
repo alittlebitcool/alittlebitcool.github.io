@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>算法模板总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="栈 队列 链表 哈希表 哈希数组 堆 优先队列 双端队列 可并堆 左偏堆 二分法 ​	基本二分查找模板 123456789101112131415&#x2F;&#x2F; 适用于查找目标值是否存在，返回任意一个匹配的索引。public int binarySearch(int[] nums, int target) &amp;#123;    int left &#x3D; 0, right &#x3D; nums.length - 1;">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>算法模板总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据结构线性结构栈 ​	后进先出（LIFO） 的数据结构，常用于递归、括号匹配、表达式求值等问题。 ​	栈的应用场景 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253&#x2F;&#x2F; 括号匹配public boolean isValid(String s) &amp;#12">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法模板总结">
 <meta property="og:url" content="https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="YuXingZh Blog">
-<meta property="og:description" content="栈 队列 链表 哈希表 哈希数组 堆 优先队列 双端队列 可并堆 左偏堆 二分法 ​	基本二分查找模板 123456789101112131415&#x2F;&#x2F; 适用于查找目标值是否存在，返回任意一个匹配的索引。public int binarySearch(int[] nums, int target) &amp;#123;    int left &#x3D; 0, right &#x3D; nums.length - 1;">
+<meta property="og:description" content="数据结构线性结构栈 ​	后进先出（LIFO） 的数据结构，常用于递归、括号匹配、表达式求值等问题。 ​	栈的应用场景 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253&#x2F;&#x2F; 括号匹配public boolean isValid(String s) &amp;#12">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2024-03-06T07:21:26.000Z">
-<meta property="article:modified_time" content="2025-03-06T08:01:39.156Z">
+<meta property="article:modified_time" content="2025-03-06T08:51:17.099Z">
 <meta property="article:author" content="YuXingZh">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -18,7 +18,7 @@
   "url": "https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/",
   "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
   "datePublished": "2024-03-06T07:21:26.000Z",
-  "dateModified": "2025-03-06T08:01:39.156Z",
+  "dateModified": "2025-03-06T08:51:17.099Z",
   "author": [
     {
       "@type": "Person",
@@ -157,19 +157,47 @@
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
   title: '算法模板总结',
   isHighlightShrink: false,
-  isToc: false,
+  isToc: true,
   pageType: 'post'
-}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">算法模板总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">算法模板总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-06T08:01:39.156Z" title="更新于 2025-03-06 16:01:39">2025-03-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>栈</p>
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">算法模板总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">算法模板总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-06T08:51:17.099Z" title="更新于 2025-03-06 16:51:17">2025-03-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h4 id="线性结构"><a href="#线性结构" class="headerlink" title="线性结构"></a>线性结构</h4><p>栈</p>
+<p>​	后进先出（LIFO） 的数据结构，常用于递归、括号匹配、表达式求值等问题。</p>
+<p>​	栈的应用场景</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 括号匹配</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">(String s)</span> &#123;</span><br><span class="line">    Stack&lt;Character&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">char</span> c : s.toCharArray()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="string">&#x27;(&#x27;</span> || c == <span class="string">&#x27;[&#x27;</span> || c == <span class="string">&#x27;&#123;&#x27;</span>) &#123;</span><br><span class="line">            stack.push(c);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (stack.isEmpty()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="type">char</span> <span class="variable">top</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">            <span class="keyword">if</span> ((c == <span class="string">&#x27;)&#x27;</span> &amp;&amp; top != <span class="string">&#x27;(&#x27;</span>) || </span><br><span class="line">                (c == <span class="string">&#x27;]&#x27;</span> &amp;&amp; top != <span class="string">&#x27;[&#x27;</span>) || </span><br><span class="line">                (c == <span class="string">&#x27;&#125;&#x27;</span> &amp;&amp; top != <span class="string">&#x27;&#123;&#x27;</span>)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表达式求值</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">evalRPN</span><span class="params">(String[] tokens)</span> &#123;</span><br><span class="line">    Stack&lt;Integer&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (String token : tokens) &#123;</span><br><span class="line">        <span class="keyword">if</span> (token.equals(<span class="string">&quot;+&quot;</span>)) &#123;</span><br><span class="line">            stack.push(stack.pop() + stack.pop());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">&quot;-&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> stack.pop(), a = stack.pop();</span><br><span class="line">            stack.push(a - b);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">&quot;*&quot;</span>)) &#123;</span><br><span class="line">            stack.push(stack.pop() * stack.pop());</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (token.equals(<span class="string">&quot;/&quot;</span>)) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> stack.pop(), a = stack.pop();</span><br><span class="line">            stack.push(a / b);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            stack.push(Integer.parseInt(token));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> stack.pop();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 单调栈</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] nextGreaterElement(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">    <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">    Stack&lt;Integer&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> nums.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek() &lt;= nums[i]) &#123;</span><br><span class="line">            stack.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        result[i] = stack.isEmpty() ? -<span class="number">1</span> : stack.peek();</span><br><span class="line">        stack.push(nums[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>队列</p>
-<p>链表</p>
-<p>哈希表</p>
-<p>哈希数组</p>
-<p>堆</p>
-<p>优先队列</p>
+<p>​	先进先出（FIFO） 的数据结构，常用于 BFS、缓存、任务调度等问题。</p>
+<p>​	队列的应用场景</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 广度优先搜索</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bfs</span><span class="params">(<span class="type">int</span>[][] graph, <span class="type">int</span> start)</span> &#123;</span><br><span class="line">    Queue&lt;Integer&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    <span class="type">boolean</span>[] visited = <span class="keyword">new</span> <span class="title class_">boolean</span>[graph.length];</span><br><span class="line">    queue.offer(start);</span><br><span class="line">    visited[start] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!queue.isEmpty()) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">node</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">        System.out.println(<span class="string">&quot;Visited: &quot;</span> + node);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> neighbor : graph[node]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[neighbor]) &#123;</span><br><span class="line">                queue.offer(neighbor);</span><br><span class="line">                visited[neighbor] = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滑动窗口最大值</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span>[] maxSlidingWindow(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (nums == <span class="literal">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="type">int</span>[] result = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length - k + <span class="number">1</span>];</span><br><span class="line">    Deque&lt;Integer&gt; deque = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        <span class="comment">// 移除不在窗口范围内的元素</span></span><br><span class="line">        <span class="keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k + <span class="number">1</span>) &#123;</span><br><span class="line">            deque.pollFirst();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 移除比当前元素小的元素</span></span><br><span class="line">        <span class="keyword">while</span> (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt; nums[i]) &#123;</span><br><span class="line">            deque.pollLast();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 添加当前元素</span></span><br><span class="line">        deque.offerLast(i);</span><br><span class="line">        <span class="comment">// 记录窗口最大值</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;= k - <span class="number">1</span>) &#123;</span><br><span class="line">            result[i - k + <span class="number">1</span>] = nums[deque.peekFirst()];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>双端队列</p>
+<p>优先队列</p>
+<p>链表</p>
+<p>块状链表</p>
+<p>跳跃表</p>
+<h4 id="树形结构"><a href="#树形结构" class="headerlink" title="树形结构"></a>树形结构</h4><p>二叉查找树</p>
+<p>平衡二叉树</p>
+<p>二叉排序树</p>
+<p>B树</p>
+<p>B+树</p>
+<p>哈夫曼树</p>
+<p>字典树（Trie树）</p>
+<p>后缀树</p>
+<p>线段树</p>
+<p>一维线段树</p>
+<p>二维线段树</p>
+<p>树状数组</p>
+<p>一维树状数组</p>
+<p>N维树状数组</p>
+<p>Treap</p>
+<p>伸展树</p>
 <p>可并堆</p>
 <p>左偏堆</p>
-<p>二分法</p>
+<h4 id="哈希结构"><a href="#哈希结构" class="headerlink" title="哈希结构"></a>哈希结构</h4><p>哈希表</p>
+<p>哈希数组</p>
+<h4 id="堆结构"><a href="#堆结构" class="headerlink" title="堆结构"></a>堆结构</h4><p>堆</p>
+<p>可并堆</p>
+<p>左偏堆</p>
+<h3 id="算法设计范式"><a href="#算法设计范式" class="headerlink" title="算法设计范式"></a>算法设计范式</h3><h4 id="分治法"><a href="#分治法" class="headerlink" title="分治法"></a>分治法</h4><p>二分法</p>
 <p>​	基本二分查找模板</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 适用于查找目标值是否存在，返回任意一个匹配的索引。</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] == target) &#123;</span><br><span class="line">            <span class="keyword">return</span> mid; <span class="comment">// 找到目标值，返回索引</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>; <span class="comment">// 目标值在右半部分</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>; <span class="comment">// 目标值在左半部分</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>; <span class="comment">// 未找到目标值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -179,6 +207,8 @@
 <p>​	查找右边界的二分查找模板</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 适用于查找最后一个等于目标值的索引，或者最后一个小于目标值的索引。</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">leftBound</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> left + (right - left) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 检查 left 是否越界或 nums[left] 是否等于 target</span></span><br><span class="line">    <span class="keyword">if</span> (left &gt;= nums.length || nums[left] != target) &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
+
 <p>三分法</p>
 <p>​	适用于在单峰函数（即先递增后递减，或先递减后递增的函数）中寻找极值（最大值或最小值）的算法。如果函数有多个极值点，三分法可能无法正确找到全局极值。它的思想是通过将区间分成三部分。每次将区间 [left, right] 分成三部分：mid1 &#x3D; left + (right - left) &#x2F; 3 和 mid2 &#x3D; right - (right - left) &#x2F; 3。 通过比较 f(mid1) 和 f(mid2)，缩小搜索范围。通过比较 <code>f(mid1)</code> 和 <code>f(mid2)</code>，缩小搜索范围，最终找到极值点。</p>
 <p>​	寻找最小值</p>
@@ -187,8 +217,9 @@
 <p>​	寻找最大值</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">ternarySearchMax</span><span class="params">(<span class="type">double</span> left, <span class="type">double</span> right, <span class="type">double</span> eps)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (right - left &gt; eps) &#123; <span class="comment">// eps 是精度，例如 1e-7</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">mid1</span> <span class="operator">=</span> left + (right - left) / <span class="number">3</span>;</span><br><span class="line">        <span class="type">double</span> <span class="variable">mid2</span> <span class="operator">=</span> right - (right - left) / <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">if</span> (f(mid1) &gt; f(mid2)) &#123;</span><br><span class="line">            right = mid2; <span class="comment">// 最大值在 [left, mid2]</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            left = mid1; <span class="comment">// 最大值在 [mid1, right]</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (left + right) / <span class="number">2</span>; <span class="comment">// 返回最大值点的近似值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例函数 f(x)</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">double</span> <span class="title function_">f</span><span class="params">(<span class="type">double</span> x)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> -(x - <span class="number">2</span>) * (x - <span class="number">2</span>); <span class="comment">// 例如一个倒置的抛物线函数，最大值在 x = 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>二叉查找树</p>
-<p>回溯算法</p>
+
+
+<h4 id="回溯法"><a href="#回溯法" class="headerlink" title="回溯法"></a>回溯法</h4><p>回溯算法</p>
 <p>​	回溯算法是一种通过递归尝试所有可能的解，并在不满足条件时回退（撤销选择）的算法。它常用于解决组合、排列、子集等问题。</p>
 <p>​	关键点：路径（Path）： 表示当前已经做出的选择。 通常用 List 或 StringBuilder 等数据结构存储。 选择列表（Choices）： 表示当前可以做的选择。 在排列问题中，选择列表是所有未使用的元素；在组合问题中，选择列表是剩余的元素。 结束条件（Base Case）： 当路径满足某种条件时，将其加入结果集。 例如，路径长度等于数组长度（排列问题），或者路径和等于目标值（组合总和问题）。 剪枝（Pruning）： 在遍历选择列表时，跳过无效的选择，减少递归次数。 例如，跳过已经使用过的元素，或者跳过不符合条件的选择。 做选择与撤销选择： 在递归调用前，将选择加入路径。 在递归调用后，将选择从路径中移除，恢复状态。</p>
 <p>​	每一次独立的决策只对应「选择」和「不选」两种情况，适用于每个元素只有两种选择的情况，例如子集问题、组合问题等。</p>
@@ -197,270 +228,134 @@
 <p>​	每一次独立的决策对应多种选择这种形式适用于每个决策有多种选择的情况，例如排列问题、组合总和问题等。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">dfs</span><span class="params">(选择列表, 路径(当前结果)</span>, 结果集) &#123;</span><br><span class="line">    <span class="keyword">if</span> (满足结束条件) &#123;</span><br><span class="line">        结果集.add(路径);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">for</span> (选择 in 选择列表) &#123;</span><br><span class="line">        <span class="keyword">if</span> (选择无效) <span class="keyword">continue</span>; <span class="comment">// 剪枝</span></span><br><span class="line">        </span><br><span class="line">        做选择;</span><br><span class="line">        dfs(选择列表, 路径’, 结果集);</span><br><span class="line">        撤销选择;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>Treap</p>
-<p>伸展树</p>
-<p>并查集</p>
+
+
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>背包问题</p>
+<p>0-1背包</p>
+<p>无限背包</p>
+<p>带附属关系的背包问题</p>
+<p>双背包求最优值</p>
+<p>区间DP</p>
+<p>树型DP</p>
+<p>状态DP</p>
+<p>四边形不等式理论</p>
+<p>记忆化搜索</p>
+<h4 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h4><p>最优装载问题</p>
+<p>部分背包问题</p>
+<p>乘船问题</p>
+<p>双机调度问题（Johnson算法）</p>
+<h4 id="搜索算法"><a href="#搜索算法" class="headerlink" title="搜索算法"></a>搜索算法</h4><p>广度优先搜索（BFS）</p>
+<p>深度优先搜索（DFS）</p>
+<p>A*算法</p>
+<p>IDA*算法</p>
+<p>双向搜索</p>
+<p>剪枝</p>
+<p>记忆化搜索</p>
+<h3 id="图论算法"><a href="#图论算法" class="headerlink" title="图论算法"></a>图论算法</h3><h4 id="基本图算法"><a href="#基本图算法" class="headerlink" title="基本图算法"></a>基本图算法</h4><p>并查集</p>
 <p>​	并查集的核心操作是查找和合并。 通过路径压缩和按秩合并优化，可以将时间复杂度降到接近常数级别。并查集常用于解决动态连通性问题，例如判断图中是否有环、计算连通分量、最小生成树等。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UnionFind</span> &#123;</span><br><span class="line">    <span class="type">int</span>[] parent;</span><br><span class="line">    <span class="type">int</span>[] rank;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UnionFind</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        parent = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">        rank = <span class="keyword">new</span> <span class="title class_">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            parent[i] = i; <span class="comment">// 初始时，每个元素的父节点是自己</span></span><br><span class="line">            rank[i] = <span class="number">1</span>;    <span class="comment">// 初始时，每个集合的秩为 1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查找（带路径压缩）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span> x)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (parent[x] != x) &#123;</span><br><span class="line">            parent[x] = find(parent[x]); <span class="comment">// 路径压缩</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> parent[x];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 合并（带按秩合并）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">union</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">rootX</span> <span class="operator">=</span> find(x);</span><br><span class="line">        <span class="type">int</span> <span class="variable">rootY</span> <span class="operator">=</span> find(y);</span><br><span class="line">        <span class="keyword">if</span> (rootX != rootY) &#123;</span><br><span class="line">            <span class="keyword">if</span> (rank[rootX] &gt; rank[rootY]) &#123;</span><br><span class="line">                parent[rootY] = rootX;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rank[rootX] &lt; rank[rootY]) &#123;</span><br><span class="line">                parent[rootX] = rootY;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                parent[rootY] = rootX;</span><br><span class="line">                rank[rootX]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断两个元素是否属于同一集合</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isConnected</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> find(x) == find(y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>​	并查集的应用场景</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断图中是否有环:遍历图中的每条边，对边的两个顶点进行合并。如果在合并前发现两个顶点已经属于同一集合，则说明图中存在环。</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasCycle</span><span class="params">(<span class="type">int</span>[][] edges, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    <span class="type">UnionFind</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UnionFind</span>(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] edge : edges) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">u</span> <span class="operator">=</span> edge[<span class="number">0</span>], v = edge[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (uf.isConnected(u, v)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 存在环</span></span><br><span class="line">        &#125;</span><br><span class="line">        uf.union(u, v);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算连通分量:初始化并查集。遍历所有边，合并相连的顶点。最后统计有多少个不同的根节点。</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">countComponents</span><span class="params">(<span class="type">int</span> n, <span class="type">int</span>[][] edges)</span> &#123;</span><br><span class="line">    <span class="type">UnionFind</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UnionFind</span>(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] edge : edges) &#123;</span><br><span class="line">        uf.union(edge[<span class="number">0</span>], edge[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (uf.find(i) == i) &#123; <span class="comment">// 统计根节点的数量</span></span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最小生成树（Kruskal 算法） 将边按权重从小到大排序。 遍历每条边，如果边的两个顶点不属于同一集合，则合并并加入生成树。</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">kruskal</span><span class="params">(<span class="type">int</span>[][] edges, <span class="type">int</span> n)</span> &#123;</span><br><span class="line">    Arrays.sort(edges, (a, b) -&gt; a[<span class="number">2</span>] - b[<span class="number">2</span>]); <span class="comment">// 按权重排序</span></span><br><span class="line">    <span class="type">UnionFind</span> <span class="variable">uf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UnionFind</span>(n);</span><br><span class="line">    <span class="type">int</span> <span class="variable">minCost</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span>[] edge : edges) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">u</span> <span class="operator">=</span> edge[<span class="number">0</span>], v = edge[<span class="number">1</span>], w = edge[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">if</span> (!uf.isConnected(u, v)) &#123;</span><br><span class="line">            uf.union(u, v);</span><br><span class="line">            minCost += w;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> minCost;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>Prim算法</p>
-<p>Kruskal算法(稀疏图)</p>
-<p>集合计数问题</p>
-<p>二分图的识别</p>
-<p>平衡二叉树</p>
-<p>二叉排序树</p>
-<p>线段树</p>
-<p>一维线段树</p>
-<p>二维线段树</p>
-<p>树状数组</p>
-<p>一维树状数组</p>
-<p>N维树状数组</p>
-<p>字典树</p>
-<p>后缀数组，后缀树</p>
-<p>块状链表</p>
-<p>哈夫曼树</p>
-<p>桶，跳跃表</p>
-<p>Trie树(静态建树、动态建树)</p>
-<p>AC自动机</p>
-<p>LCA和RMQ问题</p>
-<p>KMP算法</p>
-<p>图论 基本图算法图</p>
-<p>广度优先遍历</p>
-<p>深度优先遍历</p>
+<p>广度优先遍历（BFS）</p>
+<p>深度优先遍历（DFS）</p>
 <p>拓扑排序</p>
-<p>割边割点</p>
-<p>强连通分量</p>
-<p>Tarjan算法</p>
-<p>双连通分量</p>
-<p>强连通分支及其缩点</p>
-<p>图的割边和割点</p>
-<p>最小割模型、网络流规约</p>
-<p>2-SAT问题</p>
-<p>欧拉回路</p>
-<p>哈密顿回路</p>
-<p>最小生成树</p>
+<h4 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h4><p>Dijkstra算法</p>
+<p>Bellman-Ford算法</p>
+<p>SPFA算法</p>
+<p>Floyd-Warshall算法</p>
+<p>Johnson算法</p>
+<p>次短路径</p>
+<p>第k短路径</p>
+<h4 id="最小生成树"><a href="#最小生成树" class="headerlink" title="最小生成树"></a>最小生成树</h4><p>Prim算法</p>
+<p>Kruskal算法</p>
 <p>Sollin算法</p>
 <p>次小生成树</p>
 <p>第k小生成树</p>
 <p>最优比例生成树</p>
 <p>最小树形图</p>
 <p>最小度限制生成树</p>
+<h4 id="网络流"><a href="#网络流" class="headerlink" title="网络流"></a>网络流</h4><p>最大流</p>
+<p>Ford-Fulkerson算法</p>
+<p>Dinic算法</p>
+<p>最小割</p>
+<p>Stoer-Wagner算法</p>
+<p>费用流</p>
+<p>含负费用的最小费用最大流</p>
+<h4 id="连通性"><a href="#连通性" class="headerlink" title="连通性"></a>连通性</h4><p>强连通分量（Tarjan算法）</p>
+<p>双连通分量</p>
+<p>割边和割点</p>
+<h4 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h4><p>匈牙利算法</p>
+<p>Kuhn-Munkres算法（KM算法）</p>
+<p>一般图的最大基数匹配</p>
+<p>二分图匹配</p>
+<h4 id="其他图算法"><a href="#其他图算法" class="headerlink" title="其他图算法"></a>其他图算法</h4><p>2-SAT问题</p>
+<p>欧拉回路</p>
+<p>哈密顿回路</p>
+<p>差分约束系统</p>
+<h3 id="字符串算法"><a href="#字符串算法" class="headerlink" title="字符串算法"></a>字符串算法</h3><h4 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h4><p>KMP算法</p>
+<p>AC自动机</p>
+<h4 id="后缀结构"><a href="#后缀结构" class="headerlink" title="后缀结构"></a>后缀结构</h4><p>后缀数组</p>
+<p>后缀树</p>
+<h4 id="字典树"><a href="#字典树" class="headerlink" title="字典树"></a>字典树</h4><p>Trie树（静态建树、动态建树）</p>
+<h3 id="数学与数论"><a href="#数学与数论" class="headerlink" title="数学与数论"></a>数学与数论</h3><h4 id="数论"><a href="#数论" class="headerlink" title="数论"></a>数论</h4><p>欧几里得算法（GCD）</p>
+<p>扩展欧几里得算法</p>
+<p>中国剩余定理</p>
+<p>欧拉函数</p>
+<p>素数测试</p>
+<p>米勒测试法</p>
+<p>同余定理</p>
+<p>大数分解</p>
+<p>佩尔方程</p>
+<p>连分数逼近</p>
+<h4 id="组合数学"><a href="#组合数学" class="headerlink" title="组合数学"></a>组合数学</h4><p>排列组合</p>
+<p>容斥原理</p>
+<p>Catalan数</p>
+<p>Stirling数</p>
+<p>斐波那契数</p>
+<p>Polya计数法</p>
+<p>Burnside定理</p>
+<h4 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h4><p>矩阵快速幂</p>
+<p>高斯消元</p>
+<p>LUP分解</p>
+<h4 id="计算几何"><a href="#计算几何" class="headerlink" title="计算几何"></a>计算几何</h4><p>凸包</p>
+<p>平面凸包</p>
+<p>三维凸包</p>
+<p>最近点对</p>
+<p>线段交点</p>
+<p>多边形重心</p>
+<p>圆与直线交点</p>
+<p>点集最小圆覆盖</p>
+<p>Delaunay剖分&#x2F;Voronoi图</p>
+<h3 id="随机算法"><a href="#随机算法" class="headerlink" title="随机算法"></a>随机算法</h3><p>随机化算法</p>
+<p>0&#x2F;1分数规划</p>
+<h3 id="博弈论"><a href="#博弈论" class="headerlink" title="博弈论"></a>博弈论</h3><p>Nim游戏</p>
+<p>极大极小过程</p>
+<h3 id="其他经典问题"><a href="#其他经典问题" class="headerlink" title="其他经典问题"></a>其他经典问题</h3><p>LCA和RMQ问题</p>
+<p>稳定婚姻问题</p>
+<p>弦图</p>
 <p>平面点的欧几里德最小生成树</p>
 <p>平面点的曼哈顿最小生成树</p>
 <p>最小平衡生成树</p>
-<p>最短路径</p>
-<p>有向无环图的最短路径-&gt;拓扑排序</p>
-<p>非负权值加权图的最短路径-&gt;Dijkstra算法(可使用二叉堆优化)</p>
-<p>含负权值加权图的最短路径-&gt;Bellmanford算法</p>
-<p>含负权值加权图的最短路径-&gt;Spfa算法</p>
-<p>(稠密带负权图中SPFA的效率并不如Bellman-Ford高)</p>
-<p>全源最短路弗洛伊德算法Floyd</p>
-<p>全源最短路Johnson算法</p>
-<p>次短路径</p>
-<p>第k短路径</p>
 <p>差分约束系统</p>
-<p>平面点对的最短路径(优化)</p>
-<p>双标准限制最短路径</p>
-<p>最大流</p>
-<p>增广路-&gt;Ford-Fulkerson算法</p>
-<p>预推流</p>
-<p>Dinic算法</p>
-<p>有上下界限制的最大流</p>
-<p>节点有限制的网络流</p>
-<p>无向图最小割-&gt;Stoer-Wagner算法</p>
-<p>有向图和无向图的边不交路径</p>
-<p>Ford-Fulkerson迭加算法</p>
-<p>含负费用的最小费用最大流</p>
-<p>匹配</p>
-<p>Hungary算法</p>
-<p>最小点覆盖</p>
-<p>最小路径覆盖</p>
-<p>最大独立集问题</p>
-<p>二分图最优完备匹配Kuhn-Munkras算法</p>
-<p>不带权二分匹配：匈牙利算法</p>
-<p>带权二分匹配：KM算法</p>
-<p>一般图的最大基数匹配</p>
-<p>一般图的赋权匹配问题</p>
-<p>拓扑排序</p>
-<p>弦图</p>
-<p>稳定婚姻问题</p>
-<p>搜索 广搜的状态优化</p>
-<p>利用M进制数存储状态</p>
-<p>转化为串用hash表判重</p>
-<p>按位压缩存储状态</p>
-<p>双向广搜</p>
-<p>A*算法</p>
-<p>深搜的优化</p>
-<p>位运算</p>
-<p>剪枝</p>
-<p>函数参数尽可能少</p>
-<p>层数不易过大</p>
-<p>双向搜索或者是轮换搜索</p>
-<p>IDA*算法</p>
-<p>记忆化搜索</p>
-<p>动态规划 四边形不等式理论</p>
-<p>不完全状态记录</p>
-<p>青蛙过河问题</p>
-<p>利用区间dp</p>
-<p>背包类问题</p>
-<p>0-1背包，经典问题</p>
-<p>无限背包，经典问题</p>
-<p>判定性背包问题</p>
-<p>带附属关系的背包问题</p>
-<p>+ -1背包问题</p>
-<p>双背包求最优值</p>
-<p>构造三角形问题</p>
-<p>带上下界限制的背包问题(012背包)</p>
-<p>线性的动态规划问题</p>
-<p>积木游戏问题</p>
-<p>决斗（判定性问题）</p>
-<p>圆的最大多边形问题</p>
-<p>统计单词个数问题</p>
-<p>棋盘分割</p>
-<p>日程安排问题</p>
-<p>最小逼近问题(求出两数之比最接近某数&#x2F;两数之和等于某数等等)</p>
-<p>方块消除游戏(某区间可以连续消去求最大效益)</p>
-<p>资源分配问题</p>
-<p>数字三角形问题</p>
-<p>漂亮的打印</p>
-<p>邮局问题与构造答案</p>
-<p>最高积木问题</p>
-<p>两段连续和最大</p>
-<p>2次幂和问题</p>
-<p>N个数的最大M段子段和</p>
-<p>交叉最大数问题</p>
-<p>判定性问题的dp(如判定整除、判定可达性等)</p>
-<p>模K问题的dp</p>
-<p>特殊的模K问题，求最大(最小)模K的数</p>
-<p>变换数问题</p>
-<p>单调性优化的动态规划</p>
-<p>1-SUM问题</p>
-<p>2-SUM问题</p>
-<p>序列划分问题(单调队列优化)</p>
-<p>剖分问题(多边形剖分&#x2F;石子合并&#x2F;圆的剖分&#x2F;乘积最大)</p>
-<p>凸多边形的三角剖分问题</p>
-<p>乘积最大问题</p>
-<p>多边形游戏(多边形边上是操作符,顶点有权值)</p>
-<p>石子合并(N^3&#x2F;N^2&#x2F;NLogN各种优化)</p>
-<p>贪心的动态规划</p>
-<p>最优装载问题</p>
-<p>部分背包问题</p>
-<p>乘船问题</p>
-<p>贪心策略</p>
-<p>双机调度问题Johnson算法</p>
-<p>状态dp</p>
-<p>牛仔射击问题(博弈类)</p>
-<p>哈密顿路径的状态dp</p>
-<p>两支点天平平衡问题</p>
-<p>一个有向图的最接近二部图</p>
-<p>树型dp</p>
-<p>完美服务器问题(每个节点有3种状态)</p>
-<p>小胖守皇宫问题</p>
-<p>网络收费问题</p>
-<p>树中漫游问题</p>
-<p>树上的博弈</p>
-<p>树的最大独立集问题</p>
-<p>树的最大平衡值问题</p>
-<p>构造树的最小环</p>
-<p>数学 数论 中国剩余定理</p>
-<p>欧拉函数</p>
-<p>欧几里得定理</p>
-<p>欧几里德辗转相除法求GCD(最大公约数)</p>
-<p>扩展欧几里得</p>
-<p>大数分解与素数判定</p>
-<p>佩尔方程</p>
-<p>同余定理(大数求余)</p>
-<p>素数测试</p>
-<p>一千万以内：筛选法</p>
-<p>一千万以外：米勒测试法</p>
-<p>连分数逼近</p>
-<p>因式分解</p>
-<p>循环群生成元</p>
-<p>素数与整除问题</p>
-<p>进制位</p>
-<p>同余模运算</p>
-<p>组合数学</p>
-<p>排列组合</p>
-<p>容斥原理</p>
-<p>递推关系和生成函数</p>
-<p>Polya计数法</p>
-<p>Polya计数公式</p>
-<p>Burnside定理</p>
-<p>N皇后构造解</p>
-<p>幻方的构造</p>
-<p>满足一定条件的hamilton圈的构造</p>
-<p>Catalan数</p>
-<p>Stirling数</p>
-<p>斐波拉契数</p>
-<p>调和数</p>
-<p>连分数</p>
-<p>MoBius反演</p>
-<p>偏序关系理论</p>
-<p>加法原理和乘法原理</p>
-<p>计算几何</p>
-<p>基本公式</p>
-<p>叉乘</p>
+<p>2-SAT问题</p>
+<h3 id="优化问题"><a href="#优化问题" class="headerlink" title="优化问题"></a>优化问题</h3><p>线性规划</p>
+<p>快速傅立叶变换（FFT）</p>
+<p>三分法求解单峰（单谷）极值</p>
+<p>迭代逼近</p>
+<h3 id="计算几何-1"><a href="#计算几何-1" class="headerlink" title="计算几何"></a>计算几何</h3><p>叉乘</p>
 <p>点乘</p>
-<p>常见形状的面积、周长、体积公式</p>
-<p>坐标离散化</p>
-<p>线段</p>
-<p>判断两线段（一直线、一线段）是否相交</p>
-<p>求两线段的交点</p>
-<p>多边形</p>
-<p>判定凸多边形,顶点按顺时针或逆时针给出,(不)允许相邻边共线</p>
-<p>判点在凸多边形内或多边形边上,顶点按顺时针或逆时针给出</p>
-<p>判点在凸多边形内,顶点按顺时针或逆时针给出,在多边形边上返回0</p>
-<p>判点在任意多边形内,顶点按顺时针或逆时针给出</p>
-<p>判线段在任意多边形内,顶点按顺时针或逆时针给出,与边界相交返回1</p>
-<p>多边形重心</p>
-<p>多边形切割(半平面交)</p>
+<p>多边形切割</p>
 <p>扫描线算法</p>
 <p>多边形的内核</p>
-<p>三角形</p>
-<p>内心</p>
-<p>外心</p>
-<p>重心</p>
-<p>垂心</p>
 <p>费马点</p>
-<p>圆</p>
-<p>判直线和圆相交,包括相切</p>
-<p>判线段和圆相交,包括端点和相切</p>
-<p>判圆和圆相交,包括相切</p>
-<p>计算圆上到点p最近点,如p与圆心重合,返回p本身</p>
-<p>计算直线与圆的交点,保证直线与圆有交点</p>
-<p>计算线段与圆的交点可用这个函数后判点是否在线段上</p>
-<p>计算圆与圆的交点,保证圆与圆有交点,圆心不重合</p>
-<p>计算两圆的内外公切线</p>
-<p>计算线段到圆的切点</p>
+<p>圆与圆的交点</p>
+<p>圆与直线的交点</p>
 <p>点集最小圆覆盖</p>
-<p>可视图的建立</p>
-<p>对踵点</p>
-<p>经典问题</p>
-<p>平面凸包</p>
-<p>三维凸包</p>
-<p>Delaunay剖分&#x2F;Voronoi图</p>
-<p>计算方法</p>
-<p>二分法求解单调函数相关知识</p>
-<p>用矩阵加速的计算</p>
-<p>迭代法</p>
-<p>解线性方程组</p>
-<p>LUP分解</p>
-<p>高斯消元</p>
-<p>解模线性方程组</p>
-<p>定积分计算</p>
-<p>多项式求根</p>
-<p>周期性方程</p>
-<p>线性规划</p>
-<p>快速傅立叶变换</p>
-<p>随机算法</p>
-<p>0&#x2F;1分数规划</p>
-<p>三分法求解单峰(单谷)的极值</p>
-<p>迭代逼近</p>
-<p>矩阵法</p>
-<p>博弈论</p>
-<p>极大极小过程</p>
-<p>Nim问题</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/07/28/mybatis%E6%80%BB%E7%BB%93/" title="Mybatis总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Mybatis总结</div></div><div class="info-2"><div class="info-item-1">缓存一级缓存每当我们使用MyBatis开启一次和数据库的会话，MyBatis会创建出一个SqlSession对象表示一次数据库会话。 在对数据库的一次会话中，我们有可能会反复地执行完全相同的查询语句，如果不采取一些措施的话，每一次查询都会查询一次数据库,而我们在极短的时间内做了完全相同的查询，那么它们的结果极有可能完全相同，由于查询一次数据库的代价很大，这有可能造成很大的资源浪费。 为了解决这一问题，减少资源的浪费，MyBatis会在表示会话的SqlSession对象中建立一个简单的缓存，将每次查询到的结果结果缓存起来，当下次查询的时候，如果判断先前有个完全一样的查询，会直接从缓存中直接将结果取出，返回给用户，不需要再进行一次数据库查询了。 如下图所示，MyBatis一次会话: 一个SqlSession对象中创建一个本地缓存(local...</div></div></div></a><a class="pagination-related  no-desc" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">设计模式总结-创建型</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-04T11:15:19.000Z" title="发表于 2025-03-04 19:15:19">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-04T11:15:16.000Z" title="发表于 2025-03-04 19:15:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-04T11:14:54.000Z" title="发表于 2025-03-04 19:14:54">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结">算法模板总结</a><time datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/07/28/mybatis%E6%80%BB%E7%BB%93/" title="Mybatis总结">Mybatis总结</a><time datetime="2022-07-28T08:20:49.000Z" title="发表于 2022-07-28 16:20:49">2022-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+<h3 id="经典问题"><a href="#经典问题" class="headerlink" title="经典问题"></a>经典问题</h3><p>N皇后问题</p>
+<p>幻方构造</p>
+<p>哈密顿圈构造</p>
+<p>平面点对的最短路径</p>
+<p>双标准限制最短路径</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2023/03/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">计算机网络</div></div><div class="info-2"><div class="info-item-1"> 分层结构   分层为了每一层专注一件事，相互独立，提高灵活性可替换性。    分层结构   应用层   任务：为计算机提供服务          传输单位：报文         表示层        任务：数据处理(编解码、加密解密、压缩解压缩) 功能：文件传输，访问和管理 协议：FTP，SMTP，DHCP          传输单位：报文         会话层   任务：管理 (建立、维护、重连)应用程序之间的会话          传输单位：报文         传输层：        任务：负责主机两个进程之间的通信          功能：端到端提供可靠传输服务，提供流量控制，差错控制，服务质量等管理服务。 协议：TCP，UDP          传输单位：报文段         网络层：        任务：路由和寻址(决定数据在网络的游走路径）          实现主机与主机之间的通信，也叫点对点（end to...</div></div></div></a><a class="pagination-related" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">设计模式总结-创建型</div></div><div class="info-2"><div class="info-item-1">单例模式 ​	确保一个类只有一个实例，并提供一个全局访问点。 ​	将构造函数设为私有，防止外部直接创建对象。提供一个静态方法（如 getInstance）作为全局访问点。在静态方法中控制实例的创建和返回。 12345678910111213141516171819202122// 单例类class Singleton &#123;    private static Singleton instance;    // 私有构造函数    private Singleton() &#123;&#125;    // 全局访问点    public static Singleton getInstance() &#123;        if (instance == null) &#123;            instance = new Singleton();        &#125;        return instance;    &#125;&#125;// 客户端代码public class Client &#123;    public static...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">线性结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%91%E5%BD%A2%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">树形结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">哈希结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A0%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">堆结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E8%8C%83%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">算法设计范式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">分治法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">回溯法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-number">2.3.</span> <span class="toc-text">动态规划</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="toc-number">2.4.</span> <span class="toc-text">贪心算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95"><span class="toc-number">2.5.</span> <span class="toc-text">搜索算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E8%AE%BA%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">图论算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%9B%BE%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">基本图算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84"><span class="toc-number">3.2.</span> <span class="toc-text">最短路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="toc-number">3.3.</span> <span class="toc-text">最小生成树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81"><span class="toc-number">3.4.</span> <span class="toc-text">网络流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E9%80%9A%E6%80%A7"><span class="toc-number">3.5.</span> <span class="toc-text">连通性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D"><span class="toc-number">3.6.</span> <span class="toc-text">匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%9B%BE%E7%AE%97%E6%B3%95"><span class="toc-number">3.7.</span> <span class="toc-text">其他图算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%AE%97%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">字符串算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D"><span class="toc-number">4.1.</span> <span class="toc-text">字符串匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E7%BC%80%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">后缀结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E5%85%B8%E6%A0%91"><span class="toc-number">4.3.</span> <span class="toc-text">字典树</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E4%B8%8E%E6%95%B0%E8%AE%BA"><span class="toc-number">5.</span> <span class="toc-text">数学与数论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E8%AE%BA"><span class="toc-number">5.1.</span> <span class="toc-text">数论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6"><span class="toc-number">5.2.</span> <span class="toc-text">组合数学</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">线性代数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95"><span class="toc-number">5.4.</span> <span class="toc-text">计算几何</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">随机算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%9A%E5%BC%88%E8%AE%BA"><span class="toc-number">7.</span> <span class="toc-text">博弈论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">其他经典问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-number">9.</span> <span class="toc-text">优化问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95-1"><span class="toc-number">10.</span> <span class="toc-text">计算几何</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">经典问题</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/" title="数据结构总结">数据结构总结</a><time datetime="2025-03-06T11:40:14.000Z" title="发表于 2025-03-06 19:40:14">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-04T11:15:19.000Z" title="发表于 2025-03-04 19:15:19">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-04T11:15:16.000Z" title="发表于 2025-03-04 19:15:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-04T11:14:54.000Z" title="发表于 2025-03-04 19:14:54">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结">算法模板总结</a><time datetime="2024-03-06T07:21:26.000Z" title="发表于 2024-03-06 15:21:26">2024-03-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
