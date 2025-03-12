@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Kubernetes | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Controller ​	控制器，它们就是维护我们的副本的数目的或者叫做我们的期望值的，一旦它的副本数不满足我们的期望值，replication controller就会将它改写成 我们的期望值 api ​	一切服务的访问入口，压力很大，为了减轻压力，每个请求下面就可以生成缓存 etcd ​	是 paxos 键值对采用 go 语言编写的键值对 数据库。 etcd 的官方 将它 定位成一个 可信赖的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes">
+<meta property="og:url" content="https://alittlebitcool.github.io/2024/06/01/Kubernetes/index.html">
+<meta property="og:site_name" content="YuXingZh Blog">
+<meta property="og:description" content="Controller ​	控制器，它们就是维护我们的副本的数目的或者叫做我们的期望值的，一旦它的副本数不满足我们的期望值，replication controller就会将它改写成 我们的期望值 api ​	一切服务的访问入口，压力很大，为了减轻压力，每个请求下面就可以生成缓存 etcd ​	是 paxos 键值对采用 go 语言编写的键值对 数据库。 etcd 的官方 将它 定位成一个 可信赖的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2024-06-01T09:48:25.000Z">
+<meta property="article:modified_time" content="2025-03-12T11:30:34.890Z">
+<meta property="article:author" content="YuXingZh">
+<meta property="article:tag" content="K8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Kubernetes",
+  "url": "https://alittlebitcool.github.io/2024/06/01/Kubernetes/",
+  "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
+  "datePublished": "2024-06-01T09:48:25.000Z",
+  "dateModified": "2025-03-12T11:30:34.890Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "YuXingZh",
+      "url": "https://alittlebitcool.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://alittlebitcool.github.io/2024/06/01/Kubernetes/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kubernetes',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Kubernetes</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Kubernetes</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-01T09:48:25.000Z" title="发表于 2024-06-01 17:48:25">2024-06-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-12T11:30:34.890Z" title="更新于 2025-03-12 19:30:34">2025-03-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>Controller</p>
+<p>​	控制器，它们就是维护我们的副本的数目的或者叫做我们的期望值的，一旦它的副本数不满足我们的期望值，replication controller就会将它改写成 我们的期望值</p>
+<p>api</p>
+<p>​	一切服务的访问入口，压力很大，为了减轻压力，每个请求下面就可以生成缓存</p>
+<p>etcd</p>
+<p>​	是 paxos 键值对采用 go 语言编写的键值对 数据库。 etcd 的官方 将它 定位成一个 可信赖的分布式键值存储服务器，它能够为整个分布式集群存储一些关键数据，协助分布式集群的正常运转。 可信赖：本身可以完成集群化 分布式：扩容缩非常方便 正常运转：保存我们的整个分布式集群的需要持久化的配置文件、配置信息，一旦我们的集群死亡后，我们可以借助到etcd 里面的一些信息，进行数据恢复 ectd 里面有2个版本，一个是 v2版，一个是v3版。v2版会将数据全部写入 内存中，v3 版本会引入本地卷的持久化操作(关机以后并不会造成数据损坏) 推荐使用kubernetes 集群中etcd v3, V1.11包含之前自带的的etcd是不支持V3的。 ETCD 键值数据库 是基于HTTP，进行的C&#x2F;S开发的， 他有 这些组件 Raft:存储我们的读写信息的(所有的信息都存在这里) WAL:预写日志：为了防止Raft里面的信息出现损坏，还有WAL预写日志 （如果想对里面的数据进行更改，需要先生成一个日志，WAL先存一下，并且会定时的对这些日志进行完整的备份[完整+临时备份]） Entry: Snapshot:日志备份完整备份+增量备份</p>
+<p>node 节点：安装 kubelet 、kube proxy、 container(Docker) 在Node节点上实现Pod网络代理，维护网络规则和四层负载均衡工作。 </p>
+<p>kubelet</p>
+<p>​	会跟我们的CRI（C 容器；R 运行环境; I 接口）—这里就是我们的Dokcer表现形式 。它会和我们的Docker进行交互，操作Docker去创建对应的容器[就是Kubelet维持我们Pod的生命周期] </p>
+<p>Kube proxy</p>
+<p>​	相当于SVC，可以进行负载操作。也就意味着如何实现Pod与Pod之间如何访问，包括负载均衡。它的默认操作时firewall，操作防火墙，实现对Pod的映射。(新版本中还支持IPVS 实现负载均衡) </p>
+<p>api server</p>
+<p>​	所有服务访问统一入口 </p>
+<p>CrontrollerManager</p>
+<p>​	维持副本期望数 </p>
+<p>Scheduler</p>
+<p>​	负责介绍任务，选择合适的节点进行分配任务。 </p>
+<p>etcd：键值对数据库，存储K8S集群所有重要信息(持久化) </p>
+<p>kubelet:直接跟容器引擎交互实现容器 的 生命周期管理 </p>
+<p>kube-proxy:负责写入规则至iptables(firewall)、ipvs(负载均衡) 实现服务映射访问的</p>
+<p>CoreDNS</p>
+<p>​	可以为集群中的svc 创建一个域名IP的对应关系解析</p>
+<p>Dashboard</p>
+<p>​	给k8s提供一个B&#x2F;S 结构访问体系</p>
+<p>Ingress controller： 官方实现了四层代理</p>
+<p>Ingress</p>
+<p>​	可以实现七层代理</p>
+<p>Federation</p>
+<p>​	提供一个可以跨越集群中心多k8s 统一管理功能</p>
+<p>Prometheus</p>
+<p>​	提供k8s 集群的监控能力 - </p>
+<p>ELK</p>
+<p>​	提供k8s 集群日志 统一 分析接入平台</p>
+<p>网络</p>
+<p>​	Service网络</p>
+<p>​	Pod网络</p>
+<p>​	节点网络</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2024/06/01/Kubernetes/">https://alittlebitcool.github.io/2024/06/01/Kubernetes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/K8s/">K8s</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/03/06/Elasticsearch/" title="Elasticsearch"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Elasticsearch</div></div><div class="info-2"><div class="info-item-1"> 资料 最全整理 https://blog.csdn.net/u011863024/article/details/115721328 https://www.cnblogs.com/jajian/p/11223992.html https://pdai.tech/md/db/nosql-es/elasticsearch.html  写数据原理  客户端选择一个 node 发送请求过去，这个 node 就是 coordinating node。对 document 进行路由，将请求转发给有 primary shard 的 node。  实际的 node 上的 primary shard 处理请求，然后将数据同步到 replica node。 coordinating node 发现 primary node 和所有 replica node 都搞定之后，就返回响应结果给客户端。  写数据底层原理   数据先写入内存 buffer，然后每隔 1s，将数据 refresh 到 os cache，到了 os cache 数据就能被搜索到（所以 es 从写入到能被搜索到，中间有 1s...</div></div></div></a><a class="pagination-related" href="/2024/07/21/%E5%95%86%E5%9F%8E%E7%A7%92%E6%9D%80%E5%88%86%E6%9E%90/" title="商城秒杀分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">商城秒杀分析</div></div><div class="info-2"><div class="info-item-1">依赖的中间件：网关、分布式缓存、消息队列、限流、数据库、TCC等 需要考虑的点：缓存预热、缓存与数据库的一致性方案、降级、熔断、削峰 加分点：蓄洪与事后泄洪 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/12/feed%E6%B5%81%E5%88%86%E6%9E%90/" title="feed流分析">feed流分析</a><time datetime="2025-03-12T09:24:27.000Z" title="发表于 2025-03-12 17:24:27">2025-03-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-02T11:15:19.000Z" title="发表于 2025-03-02 19:15:19">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-02T11:15:16.000Z" title="发表于 2025-03-02 19:15:16">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-02T11:14:54.000Z" title="发表于 2025-03-02 19:14:54">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/%E7%BA%A2%E5%8C%85%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90/" title="红包系统分析">红包系统分析</a><time datetime="2025-02-17T11:23:49.000Z" title="发表于 2025-02-17 19:23:49">2025-02-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>缓存总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="缓存组件选择 在设计架构缓存时，你首先要选定缓存组件，比如要用 Local-Cache，还是 Redis、Memcached、Pika 等开源缓存组件，如果业务缓存需求比较特殊，你还要考虑是直接定制开发一个新的缓存组件，还是对开源缓存进行二次开发，来满足业务需要。 缓存数据结构设计 确定好缓存组件后，你还要根据业务访问的特点，进行缓存数据结构的设计。对于直接简单 KV 读写的业务，你可以将这些业务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存总结">
+<meta property="og:url" content="https://alittlebitcool.github.io/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="YuXingZh Blog">
+<meta property="og:description" content="缓存组件选择 在设计架构缓存时，你首先要选定缓存组件，比如要用 Local-Cache，还是 Redis、Memcached、Pika 等开源缓存组件，如果业务缓存需求比较特殊，你还要考虑是直接定制开发一个新的缓存组件，还是对开源缓存进行二次开发，来满足业务需要。 缓存数据结构设计 确定好缓存组件后，你还要根据业务访问的特点，进行缓存数据结构的设计。对于直接简单 KV 读写的业务，你可以将这些业务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2025-02-02T08:35:24.000Z">
+<meta property="article:modified_time" content="2025-03-12T09:08:31.675Z">
+<meta property="article:author" content="YuXingZh">
+<meta property="article:tag" content="缓存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "缓存总结",
+  "url": "https://alittlebitcool.github.io/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/",
+  "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
+  "datePublished": "2025-02-02T08:35:24.000Z",
+  "dateModified": "2025-03-12T09:08:31.675Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "YuXingZh",
+      "url": "https://alittlebitcool.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://alittlebitcool.github.io/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '缓存总结',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">缓存总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">缓存总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-02T08:35:24.000Z" title="发表于 2025-02-02 16:35:24">2025-02-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-12T09:08:31.675Z" title="更新于 2025-03-12 17:08:31">2025-03-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>缓存组件选择</p>
+<p>在设计架构缓存时，你首先要选定缓存组件，比如要用 Local-Cache，还是 Redis、Memcached、Pika 等开源缓存组件，如果业务缓存需求比较特殊，你还要考虑是直接定制开发一个新的缓存组件，还是对开源缓存进行二次开发，来满足业务需要。</p>
+<p>缓存数据结构设计</p>
+<p>确定好缓存组件后，你还要根据业务访问的特点，进行缓存数据结构的设计。对于直接简单 KV 读写的业务，你可以将这些业务数据封装为 String、Json、Protocol Buffer 等格式，序列化成字节序列，然后直接写入缓存中。读取时，先从缓存组件获取到数据的字节序列，再进行反序列化操作即可。对于只需要存取部分字段或需要在缓存端进行计算的业务，你可以把数据设计为 Hash、Set、List、Geo 等结构，存储到支持复杂集合数据类型的缓存中，如 Redis、Pika 等。</p>
+<p>缓存分布设计</p>
+<p>确定了缓存组件，设计好了缓存数据结构，接下来就要设计缓存的分布。可以从 3 个维度来进行缓存分布设计。</p>
+<ol>
+<li>首先，要选择分布式算法，是采用取模还是一致性 Hash 进行分布。取模分布的方案简单，每个 key 只会存在确定的缓存节点，一致性 Hash 分布的方案相对复杂，一个 key 对应的缓存节点不确定。但一致性 Hash 分布，可以在部分缓存节点异常时，将失效节点的数据访问均衡分散到其他正常存活的节点，从而更好地保证了缓存系统的稳定性。</li>
+<li>其次，分布读写访问如何进行实施，是由缓存 Client 直接进行 Hash 分布定位读写，还是通过 Proxy 代理来进行读写路由？Client 直接读写，读写性能最佳，但需要 Client 感知分布策略。在缓存部署发生在线变化时，也需要及时通知所有缓存 Client，避免读写异常，另外，Client 实现也较复杂。而通过 Proxy 路由，Client 只需直接访问 Proxy，分布逻辑及部署变更都由 Proxy 来处理，对业务应用开发最友好，但业务访问多一跳，访问性能会有一定的损失。</li>
+<li>最后，缓存系统运行过程中，如果待缓存的数据量增长过快，会导致大量缓存数据被剔除，缓存命中率会下降，数据访问性能会随之降低，这样就需要将数据从缓存节点进行动态拆分，把部分数据水平迁移到其他缓存节点。这个迁移过程需要考虑，是由 Proxy 进行迁移还是缓存 Server 自身进行迁移，甚至根本就不支持迁移。对于 Memcached，一般不支持迁移，对 Redis，社区版本是依靠缓存 Server 进行迁移，而对 Codis 则是通过 Admin、Proxy 配合后端缓存组件进行迁移。</li>
+</ol>
+<p>缓存架构部署及运维管理</p>
+<p>设计完毕缓存的分布策略后，接下来就要考虑缓存的架构部署及运维管理了。架构部署主要考虑如何对缓存进行分池、分层、分 IDC，以及是否需要进行异构处理。</p>
+<ol>
+<li>核心的、高并发访问的不同数据，需要分别分拆到独立的缓存池中，进行分别访问，避免相互影响；访问量较小、非核心的业务数据，则可以混存。</li>
+<li>对海量数据、访问超过 10～100万 级的业务数据，要考虑分层访问，并且要分摊访问量，避免缓存过载。</li>
+<li>如果业务系统需要多 IDC 部署甚至异地多活，则需要对缓存体系也进行多 IDC 部署，要考虑如何跨 IDC 对缓存数据进行更新，可以采用直接跨 IDC 读写，也可以采用 DataBus 配合队列机进行不同 IDC 的消息同步，然后由消息处理机进行缓存更新，还可以由各个 IDC 的 DB Trigger 进行缓存更新。</li>
+<li>某些极端场景下，还需要把多种缓存组件进行组合使用，通过缓存异构达到最佳读写性能。</li>
+<li>站在系统层面，要想更好得管理缓存，还要考虑缓存的服务化，考虑缓存体系如何更好得进行集群管理、监控运维等。</li>
+</ol>
+<p>缓存设计架构的常见考量点</p>
+<p>在缓存设计架构的过程中，有一些非常重要的考量点，如下图所示，只有分析清楚了这些考量点，才能设计架构出更佳的缓存体系。</p>
+<p>​    <img src="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/300%e5%88%86%e9%92%9f%e5%90%83%e9%80%8f%e5%88%86%e5%b8%83%e5%bc%8f%e7%bc%93%e5%ad%98-%e5%ae%8c/assets/CgotOV2kRs6APtjoAADXrLxuEqI510.png" alt="0"></p>
+<p>读写方式</p>
+<p>首先是 value 的读写方式。是全部整体读写，还是只部分读写及变更？是否需要内部计算？比如，用户粉丝数，很多普通用户的粉丝有几千到几万，而大 V 的粉丝更是高达几千万甚至过亿，因此，获取粉丝列表肯定不能采用整体读写的方式，只能部分获取。另外在判断某用户是否关注了另外一个用户时，也不需要拉取该用户的全部关注列表，直接在关注列表上进行检查判断，然后返回 True&#x2F;False 或 0&#x2F;1 的方式更为高效。</p>
+<p>KV size</p>
+<p>然后是不同业务数据缓存 KV 的 size。如果单个业务的 KV size 过大，需要分拆成多个 KV 来缓存。但是，不同缓存数据的 KV size 如果差异过大，也不能缓存在一起，避免缓存效率的低下和相互影响。</p>
+<p>key 的数量</p>
+<p>key 的数量也是一个重要考虑因素。如果 key 数量不大，可以在缓存中存下全量数据，把缓存当 DB 存储来用，如果缓存读取 miss，则表明数据不存在，根本不需要再去 DB 查询。如果数据量巨大，则在缓存中尽可能只保留频繁访问的热数据，对于冷数据直接访问 DB。</p>
+<p>读写峰值</p>
+<p>另外，对缓存数据的读写峰值，如果小于 10万 级别，简单分拆到独立 Cache 池即可。而一旦数据的读写峰值超过 10万 甚至到达 100万 级的QPS，则需要对 Cache 进行分层处理，可以同时使用 Local-Cache 配合远程 cache，甚至远程缓存内部继续分层叠加分池进行处理。微博业务中，大多数核心业务的 Memcached 访问都采用的这种处理方式。</p>
+<p>命中率</p>
+<p>缓存的命中率对整个服务体系的性能影响甚大。对于核心高并发访问的业务，需要预留足够的容量，确保核心业务缓存维持较高的命中率。比如微博中的 Feed Vector Cache，常年的命中率高达 99.5% 以上。为了持续保持缓存的命中率，缓存体系需要持续监控，及时进行故障处理或故障转移。同时在部分缓存节点异常、命中率下降时，故障转移方案，需要考虑是采用一致性 Hash 分布的访问漂移策略，还是采用数据多层备份策略。</p>
+<p><strong>过期策略</strong></p>
+<ul>
+<li>可以设置较短的过期时间，让冷 key 自动过期；</li>
+<li>也可以让 key 带上时间戳，同时设置较长的过期时间，比如很多业务系统内部有这样一些 key：key_20190801。</li>
+</ul>
+<p>平均缓存穿透加载时间</p>
+<p>平均缓存穿透加载时间在某些业务场景下也很重要，对于一些缓存穿透后，加载时间特别长或者需要复杂计算的数据，而且访问量还比较大的业务数据，要配置更多容量，维持更高的命中率，从而减少穿透到 DB 的概率，来确保整个系统的访问性能。</p>
+<p>缓存可运维性</p>
+<p>对于缓存的可运维性考虑，则需要考虑缓存体系的集群管理，如何进行一键扩缩容，如何进行缓存组件的升级和变更，如何快速发现并定位问题，如何持续监控报警，最好有一个完善的运维平台，将各种运维工具进行集成。</p>
+<p>缓存安全性</p>
+<p>对于缓存的安全性考虑，一方面可以限制来源 IP，只允许内网访问，同时对于一些关键性指令，需要增加访问权限，避免被攻击或误操作时，导致重大后果。</p>
+<p>好了，第3课时的内容到这里就全部结束了，我们一起来做一个简单的回顾。首先，我们学习了在系统研发中，如何引入缓存，如何按照4步走对缓存进行设计架构及管理。最后，还熟悉了缓存设计架构中的考量点，这样你在缓存设计架构时对号入座即可。</p>
+<ul>
+<li><p>浏览器缓存</p>
+</li>
+<li><ul>
+<li>浏览器缓存是有过期时间的，我们可以通过对响应头Expires、Cache-control进行控制。</li>
+</ul>
+</li>
+<li><p>客户端缓存</p>
+</li>
+<li><p>CDN缓存</p>
+</li>
+<li><ul>
+<li>推送机制</li>
+<li>拉取机制</li>
+</ul>
+</li>
+<li><p>反向代理缓存</p>
+</li>
+<li><p>本地缓存</p>
+</li>
+<li><p>分布式缓存</p>
+</li>
+<li><p>缓存命中率</p>
+</li>
+<li></li>
+<li><p>缓存最终一致性问题</p>
+</li>
+<li><ul>
+<li><p>考虑两个问题：先写缓存还是先写数据库，更新缓存还是删除缓存。</p>
+</li>
+<li><p>有限选择删除缓存。</p>
+</li>
+<li><ul>
+<li>提高缓存利用率。每次数据发生变更，都无脑，更新缓存，但是缓存中的数据不一定会被了马上读取，这就会导致缓存中可能存放了很多不常访问的数据，浪费缓存资源。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>提高性能。很多情况下，写到缓存中的值，并不是与数据库中的值一一对应的，很有可能是先查询数据库，再经过一系列计算得出一个值，这种场景下删除缓存明显性能更好。</li>
+<li>并发安全性更高。删除缓存就不存在写写并发而导致的双写不一致问题，还可以降低读写并发的问题。</li>
+<li>简单不易出错。更新缓存的操作相比较删除缓存，操作过程更复杂也更容易出错。</li>
+</ul>
+</li>
+<li><p>但是，删除缓存也是存在缺陷的，那就是带来-次额外的 Cache Miss。Cache Miss 可能会导致缓存击穿，但是通过加锁的方式可以比较方便的解决此问题。</p>
+</li>
+</ul>
+</li>
+<li><p>缓存最终一致性解决方案</p>
+</li>
+<li><ul>
+<li><p>给缓存设置过期时间</p>
+</li>
+<li><p>先更新数据库，再更新缓存</p>
+</li>
+<li><p>先更新缓存，再更新数据库</p>
+</li>
+<li><p>新更新数据库，再删除缓存</p>
+</li>
+<li><p>先删除缓存，再更新数据库</p>
+</li>
+<li><p>延时双删</p>
+</li>
+<li><ul>
+<li>更新完数据库之后，再sleep一段时间，然后再次删除缓存。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><p>避免更新数据库的时候，其他线程从缓存中读取不到数据。</p>
+</li>
+<li><p>sleep的时间要对业务读写缓存的时间做出评估，sleep时间大于读写缓存的时间即可。</p>
+</li>
+<li><p>过程</p>
+</li>
+<li><ul>
+<li>删除redis</li>
+<li>更新数据库</li>
+<li>延时500毫秒</li>
+<li>删除redis</li>
+</ul>
+</li>
+<li><p>问题</p>
+</li>
+<li><ul>
+<li><p>为什么要延迟一段时间</p>
+</li>
+<li><ul>
+<li>两次删除redis操作执行完毕之后，数据库的数据还没有更新，若有请求访问会发现没同步到缓存中。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><p>问题为什么是删除而不是更新</p>
+</li>
+<li><ul>
+<li>数据库某段时间内更新了n次，那么缓存也要更新n次，但是这个缓存可能只被读取了1次.</li>
+<li>删除的话，就算数据库更新了n次，那么也只是做了1次缓存删除，只有当缓存真正被读取的时候才去数据库加载。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><ul>
+<li><p>为什么删两次</p>
+</li>
+<li><ul>
+<li>不删第二次，一二之间的请求访问会访问之前未修改的redis数据。</li>
+<li>删除执行后缓存是空的，新请求近来访问数据库时会更</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缺点</p>
+</li>
+<li><ul>
+<li>不适合快速响应，并且需要预估值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>消息队列</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>先更新数据库，成功后往消息队列发消息，消费到消息后再删除缓存，借助消息队列的重试机制来实现，达到最终一致性的效果，太复杂了。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><p>消息队列+订阅binlog</p>
+</li>
+<li><ul>
+<li>监听binlog消息的消息队列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缓存击穿</p>
+</li>
+<li><ul>
+<li><p>原理</p>
+</li>
+<li><ul>
+<li>缓存中没有但数据库中有的数据，如缓存时间到期的值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>解决方案</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>热点的数据设置为永不过期。批量入库的缓存项分配比较合理的过期时间避免同一时刻失效。</li>
+<li>分布式锁，互斥锁。获取锁后，在锁的逻辑里进行缓存重构的过程。被挡在外面。</li>
+<li>逻辑缓存重构，另一个线程发现你在重构，直接返回旧的数据。</li>
+<li>接口限流，熔断，降级。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缓存穿透</p>
+</li>
+<li><ul>
+<li><p>原理</p>
+</li>
+<li><ul>
+<li>缓存和数据库中都没有的数据，利用不存在的key频繁攻击我们的应用。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><p>解决方案</p>
+</li>
+<li><ul>
+<li>增加校验</li>
+<li>缓存空值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><p>布隆过滤器</p>
+</li>
+<li><ul>
+<li>似于一个hash set，用于快速判某个元素是否存在于集合中。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缓存雪崩</p>
+</li>
+<li><ul>
+<li><p>原理</p>
+</li>
+<li><ul>
+<li>数据大批量到过期时间</li>
+</ul>
+</li>
+<li><p>解决方案</p>
+</li>
+<li><ul>
+<li>过期时间随机设置。</li>
+<li>分布式部署中，将热点数据均匀分布在不同的缓存数据库中。</li>
+<li>热点数据永不过期。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>工程问题</p>
+</li>
+<li><ul>
+<li><p>缓存预热</p>
+</li>
+<li><ul>
+<li><p>定义：提前把数据库里的数据刷到缓存里</p>
+</li>
+<li><p>方法</p>
+</li>
+<li><ul>
+<li>直接写个缓存刷新也或接口，上线手动操作</li>
+<li>项目启动时自动加载</li>
+<li>定时任务刷新缓存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>热点key</p>
+</li>
+<li><ul>
+<li>访问频率较高的key，集群部署下会造成流量的不均衡，个别节点OPS过大，可能会超过单个Redis承受。</li>
+</ul>
+</li>
+<li><p>热点key监控</p>
+</li>
+<li><ul>
+<li>客户端设置全局字典，关于key和调用次数。redis命令进行记录。</li>
+<li>代理端如Twemproxy、Codis这样的Redis分布式架构可以进行统计。</li>
+<li>服务端使用monitor命令统计热点key</li>
+</ul>
+</li>
+<li><p>热点key处理</p>
+</li>
+<li><ul>
+<li>把热key打散到不同服务器上，降低压力</li>
+<li>加入二级缓存，提前加载热点key到内存，如果redis宕机，走内存查询。</li>
+</ul>
+</li>
+<li><p>热点key重建</p>
+</li>
+<li><ul>
+<li>缓存+过期时间的策略，既可以加速数据读写，也可以保证数据的更新。</li>
+</ul>
+</li>
+<li><p>布隆过滤器</p>
+</li>
+<li><ul>
+<li>误判-哈希碰撞，哈希函数映射到相同二进制位会误判</li>
+<li>误判-容量限制，元素数量较多时，会导致位的重复利用，增加误判概率</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>缓存类型</p>
+</li>
+<li><ul>
+<li><p>本地缓存</p>
+</li>
+<li><ul>
+<li>内存中进行缓存，没有远程交互性能好，但受限于单机容量小且无法展开</li>
+</ul>
+</li>
+<li><p>分布式缓存</p>
+</li>
+<li><ul>
+<li>良好的扩展能力，较大数据量也能应付，需要进行远程请求，性能不如本地</li>
+</ul>
+</li>
+<li><p>多级缓存</p>
+</li>
+<li><ul>
+<li>缓存保存访问频率最高部分的热点数据，其他存储在分布式缓存中。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Memcached</p>
+</li>
+<li><ul>
+<li>结构单一，仅用来缓存数据。</li>
+<li>不支持持久化，重启数据就消失。</li>
+</ul>
+</li>
+<li><ul>
+<li>没有原生的集群模式，依靠客户端实现往集群分片写入数据。</li>
+<li>速度劣势。</li>
+<li>多线程的非阻塞IO模型。</li>
+<li>最大可存1M</li>
+</ul>
+</li>
+<li><p>Redis</p>
+</li>
+<li><ul>
+<li>支持多种数据类型。</li>
+<li>支持持久化。</li>
+<li>提供主从同步，cluster集群部署。</li>
+<li>速度优势。</li>
+<li>单线程的多路IO复用模型，6.0多线程IO处理网络数据读写和协议解析，命令仍是单线程。</li>
+<li>最大可存512M</li>
+</ul>
+</li>
+<li></li>
+<li><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33591903/article/details/121503837">https://blog.csdn.net/qq_33591903/article/details/121503837</a></li>
+</ul>
+</li>
+</ul>
+<p>给缓存设置过期时间</p>
+<p>原理：读请求未命中缓存时从数据库读取并回写缓存，设置过期时间；写请求仅更改数据库，不操作缓存。 优点：简单直接，实现成本低。 缺点：数据一致性相对较低，在缓存未过期时写操作后读仍可能获取旧数据。 适用场景：适用于对数据一致性要求较低或者写请求很少的业务场景。 </p>
+<p>先更新数据库，再更新缓存</p>
+<p> 原理：写请求先更新数据库，再更新缓存。 优点：在正常读多写少场景下，能保证数据一致性。 缺点：写多读少阶段频繁更新缓存会降低性能；并发情况下可能将脏数据写回缓存，导致数据不一致。 </p>
+<p>先更新缓存，再更新数据库</p>
+<p> 原理：写请求先更新缓存，再更新数据库。 优点：与先更新数据库再更新缓存类似，正常情况下能保证一致性。 缺点：同样存在写多读少阶段性能降低以及并发时脏数据写入缓存的风险。 </p>
+<p>先更新数据库，再删除缓存</p>
+<p> 原理：写请求先更新数据库，然后删除缓存。 优点：读写串行时能保证数据一致性，实现相对简单。 缺点：读写并发时存在极低概率的刷脏问题，即读请求可能读取到旧数据并回写至缓存。 </p>
+<p>先删除缓存，再更新数据库</p>
+<p>原理：写请求先删除缓存，再更新数据库。 优点：在一定程度上减少了缓存不一致的情况。 缺点：读写并发时存在较低概率的刷脏风险，且若缓存永不过期且无后续写请求，可能一直读取到脏数据。 </p>
+<p>延时双删</p>
+<p>原理：在写请求删除缓存、更新数据库后，在读请求刷脏后，写请求再次删除缓存，通过设置合适的延时时间（sleep 时间）来保证数据一致性。 优点：对主从同步延迟场景也有较好的效果，能有效减少数据不一致情况。 缺点：延时时间较难确定，设置不当可能影响吞吐量或无法达到双删效果；存在第二次删除失败的可能性。 </p>
+<p>消息队列</p>
+<p>原理：写请求先更新数据库，然后将删除缓存的消息投递到消息队列（mq）中，消费端获取消息尝试删除缓存，失败则重试。 优点：能对删除失败的消息进行异步重试，保证缓存的最终一致性。 缺点：引入消息队列增加了系统复杂性，降低了可用性，可能出现消息丢失、乱序与重复消费等问题；对业务代码有一定侵入性。 </p>
+<p>消息队列 + 订阅 binlog</p>
+<p>原理：业务代码只操作数据库，启动订阅 binlog 的程序监听数据库删除操作，将相关消息投递到消息队列，再由消费者根据消息删除缓存。 优点：实现了业务代码与缓存操作的解耦。 缺点：进一步增加了系统复杂度，需要额外的中间件（如 MySQL 中的 canal）来实现 binlog 订阅。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%93%E5%AD%98/">缓存</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/" title="消息队列总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">消息队列总结</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2025/02/17/%E7%BA%A2%E5%8C%85%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90/" title="红包系统分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">红包系统分析</div></div><div class="info-2"><div class="info-item-1">依赖的中间件：网关、分布式缓存、消息队列、数据库、TCC等 需要考虑的点：并发、红包如何拆分、读写分离、异步化 加分点：红包核对等 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/12/feed%E6%B5%81%E5%88%86%E6%9E%90/" title="feed流分析">feed流分析</a><time datetime="2025-03-12T09:24:27.000Z" title="发表于 2025-03-12 17:24:27">2025-03-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-02T11:15:19.000Z" title="发表于 2025-03-02 19:15:19">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-02T11:15:16.000Z" title="发表于 2025-03-02 19:15:16">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-02T11:14:54.000Z" title="发表于 2025-03-02 19:14:54">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/%E7%BA%A2%E5%8C%85%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90/" title="红包系统分析">红包系统分析</a><time datetime="2025-02-17T11:23:49.000Z" title="发表于 2025-02-17 19:23:49">2025-02-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

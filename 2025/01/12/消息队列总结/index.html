@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>消息队列总结 | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="定义与概念：消息队列是一种异步通信机制，允许不同的应用程序或组件之间通过发送和接收消息来进行通信。消息发送者将消息放入队列中，而消息接收者则从队列中获取消息并进行处理，发送者和接收者无需同时处于运行状态，也不需要直接耦合。 核心功能： 异步处理：将消息发送到队列后，发送方无需等待接收方处理完成，可以立即返回继续执行其他任务，提高系统的响应速度和吞吐量。 解耦：发送者和接收者不需要直接依赖对方，降">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列总结">
+<meta property="og:url" content="https://alittlebitcool.github.io/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="YuXingZh Blog">
+<meta property="og:description" content="定义与概念：消息队列是一种异步通信机制，允许不同的应用程序或组件之间通过发送和接收消息来进行通信。消息发送者将消息放入队列中，而消息接收者则从队列中获取消息并进行处理，发送者和接收者无需同时处于运行状态，也不需要直接耦合。 核心功能： 异步处理：将消息发送到队列后，发送方无需等待接收方处理完成，可以立即返回继续执行其他任务，提高系统的响应速度和吞吐量。 解耦：发送者和接收者不需要直接依赖对方，降">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2025-01-12T08:35:37.000Z">
+<meta property="article:modified_time" content="2025-03-12T11:31:21.867Z">
+<meta property="article:author" content="YuXingZh">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "消息队列总结",
+  "url": "https://alittlebitcool.github.io/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/",
+  "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
+  "datePublished": "2025-01-12T08:35:37.000Z",
+  "dateModified": "2025-03-12T11:31:21.867Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "YuXingZh",
+      "url": "https://alittlebitcool.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://alittlebitcool.github.io/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '消息队列总结',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">消息队列总结</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">消息队列总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-12T08:35:37.000Z" title="发表于 2025-01-12 16:35:37">2025-01-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-12T11:31:21.867Z" title="更新于 2025-03-12 19:31:21">2025-03-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><ol>
+<li><strong>定义与概念</strong>：消息队列是一种异步通信机制，允许不同的应用程序或组件之间通过发送和接收消息来进行通信。消息发送者将消息放入队列中，而消息接收者则从队列中获取消息并进行处理，发送者和接收者无需同时处于运行状态，也不需要直接耦合。</li>
+<li>核心功能：<ul>
+<li><strong>异步处理</strong>：将消息发送到队列后，发送方无需等待接收方处理完成，可以立即返回继续执行其他任务，提高系统的响应速度和吞吐量。</li>
+<li><strong>解耦</strong>：发送者和接收者不需要直接依赖对方，降低了系统组件之间的耦合度，使得系统更易于维护和扩展。</li>
+<li><strong>削峰填谷</strong>：在流量高峰时，消息队列可以暂存大量消息，避免系统因瞬间高并发而崩溃；在流量低谷时，接收方可以从容地从队列中获取消息进行处理，平滑系统的负载。</li>
+</ul>
+</li>
+<li>使用场景：<ul>
+<li><strong>电商系统</strong>：在订单处理中，用户下单后，订单相关消息可发送到消息队列，后续的库存扣减、物流通知等操作可异步处理，避免因某个环节处理缓慢影响用户体验。</li>
+<li><strong>日志处理</strong>：将系统产生的日志消息发送到消息队列，由专门的日志处理服务从队列中获取并进行存储、分析等操作，不影响业务系统的正常运行。</li>
+<li><strong>异步任务处理</strong>：如发送邮件、短信通知等任务，通过消息队列进行异步处理，提高系统整体性能。</li>
+</ul>
+</li>
+<li>常见消息队列产品：<ul>
+<li><strong>RabbitMQ</strong>：使用 Erlang 语言开发，具有高可靠性、灵活的路由机制、多种消息协议支持等特点，广泛应用于各种企业级应用中。</li>
+<li><strong>Kafka</strong>：由 Apache 开发，主要用于处理大规模的实时数据流，具有高吞吐量、可扩展性强、持久化存储等优势，常用于大数据领域的日志收集、实时分析等场景。</li>
+<li><strong>RocketMQ</strong>：由阿里巴巴开源，具有低延迟、高并发、高可用、可伸缩等特点，在电商等领域有较多应用。</li>
+</ul>
+</li>
+<li>消息队列的关键问题：<ul>
+<li><strong>消息丢失</strong>：可能发生在生产端、消息队列本身或消费端。生产端可通过开启消息确认机制（如 RabbitMQ 的 confirm 机制）确保消息成功发送到队列；消息队列可通过持久化消息到磁盘等方式避免消息丢失；消费端可采用手动确认消息机制，在业务处理完成后再确认消息，防止消费过程中消息丢失。</li>
+<li><strong>消息重复消费</strong>：由于网络波动、消费端故障等原因，可能导致消息被重复消费。可以通过在消费端实现幂等性操作，即对同一消息多次消费的结果与消费一次相同，来解决该问题。</li>
+<li><strong>消息顺序性</strong>：在某些场景下，需要保证消息的顺序，如订单处理中的支付、发货等操作顺序。一些消息队列产品（如 Kafka 的分区）提供了一定的顺序保证机制，但需要根据具体业务需求进行合理设计和使用。</li>
+</ul>
+</li>
+<li>消息队列的架构模式：<ul>
+<li><strong>点对点模式</strong>：消息发送者将消息发送到队列，一个消息只能被一个接收者消费，类似于一对一的通信。</li>
+<li><strong>发布 &#x2F; 订阅模式</strong>：消息发送者将消息发布到主题（Topic），多个订阅者可以从主题中获取消息进行消费，实现了一对多的通信。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>模型</p>
+</li>
+<li><ul>
+<li><p>队列模型</p>
+</li>
+<li><ul>
+<li>队列模型每条消息只能被一个消费者消费，RabbitMQ 采用队列模型</li>
+</ul>
+</li>
+<li><p>发布&#x2F;订阅模型</p>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li>发布&#x2F;订阅模型就是为让一条消息可以被多个消费者消费而生的。RocketMQ和Kafka 采用发布&#x2F;订阅模型。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>提高并发度</p>
+</li>
+<li><ul>
+<li><p>Broker</p>
+</li>
+<li><ul>
+<li>引入队列和分区的概念，RocketMQ中叫队列，Kafka中叫分区。一般可以采用轮询或者key hash 取余等策略来将同一个主题的消息分配到不同的队列中。</li>
+<li>一条消息在Broker中只会有一份，每个消费组会有自己的offset即消费点位来标识消费到的位置。</li>
+<li>在消费点位之前的消息表明已经消费过了。当然这个offset是队列级别的。每个消费组都会维护订阅的Topic下的每个队列的offset。</li>
+</ul>
+</li>
+<li><p>Consumer：消费者一般都有组的概念 Consumer Group, 即消费者都是属于某个消费组的。一条消息会发往多个订阅了这个主题的消费组。</p>
+</li>
+</ul>
+</li>
+<li><p>应用场景</p>
+</li>
+<li><ul>
+<li>异步处理</li>
+</ul>
+</li>
+<li><ul>
+<li>解耦</li>
+<li>最终一致性 </li>
+<li>广播 </li>
+<li>错峰与流控</li>
+</ul>
+</li>
+<li><p>数据不丢失</p>
+</li>
+<li><ul>
+<li><p>生产消息</p>
+</li>
+<li><ul>
+<li>需要处理好Broker的响应，出错情况下利用重试、报警等手段。</li>
+</ul>
+</li>
+<li><p>存储消息</p>
+</li>
+<li><ul>
+<li>需要控制响应的时机，单机情况下是消息刷盘后返回响应。集群多副本情况下，即发送至两个副本及以上的情况下再返回响应。</li>
+</ul>
+</li>
+<li><p>消费消息</p>
+</li>
+<li><ul>
+<li>需要在执行完真正的业务逻辑之后再返回响应给Broker。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>处理重复消息</p>
+</li>
+<li><ul>
+<li>生产者端：等Broker的响应，那么就可能存在Broker已经写入了，当时响应由于网络原因生产者没有收到，然后生产者又重发了一次，此时消息就重复了。</li>
+<li>消费者端：消费者消息消费走完业务逻辑，更新Consumer offset时消费者挂了，另一个消费者顶上，此时Consumer offset还没更新，于是又拿到刚才那条消息，业务又被执行了一遍。</li>
+<li>消息重复不可避免，只能进行幂等处理。</li>
+</ul>
+</li>
+<li><p>幂等处理消息</p>
+</li>
+<li><ul>
+<li>版本号控制，数据库的约束例如唯一键，记录关键的keyid是否已经被处理过了</li>
+</ul>
+</li>
+<li><p>保证消息有序性</p>
+</li>
+<li><ul>
+<li><p>全局有序</p>
+</li>
+<li><ul>
+<li>最简单只能由一个生产者往Topic发送消息，这样的消息就是全局有序的！</li>
+<li>即使是同步MySQL Binlog也只需要保证单表消息有序即可。</li>
+</ul>
+</li>
+<li><p>局部有序</p>
+</li>
+<li><ul>
+<li>将Topic内部划分成我们需要的队列数，把消息通过特定的策略发往固定的队列中，然后每个队列对应一个单线程处理的消费者。</li>
+<li>这样即完成了部分有序的需求，又可以通过队列数量的并发来提高消息处理效率。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>处理消息堆积</p>
+</li>
+<li><ul>
+<li>产者的生产速度与消费者的消费速度不匹配。</li>
+<li>先定位消费慢的原因，一条一条消息消费处理，批量处理</li>
+</ul>
+</li>
+<li><p>设计一个消息队列</p>
+</li>
+<li><ul>
+<li>明确地提出消息中间件的几个重要角色，分别是生产者、消费者、Broker、注册中心。</li>
+</ul>
+</li>
+<li><ul>
+<li>简述下消息中间件数据流转过程，无非就是生产者生成消息，发送至 Broker，Broker 可以暂缓消息，然后消费者再从 Broker 获取消息，用于消费。</li>
+<li>而注册中心用于服务的发现包括：Broker 的发现、生产者的发现、消费者的发现，当然还包括下线，可以说服务的高可用离不开注册中心。</li>
+<li>然后开始简述实现要点，可以同通信讲起：各模块的通信可以基于 Netty 然后自定义协议来实现，注册中心可以利用 zookeeper、consul、eureka、nacos 等等，也可以像 RocketMQ 自己实现简单的 namesrv （这一句话就都是关键词）。</li>
+<li>为了考虑扩容和整体的性能，采用分布式的思想，像 Kafka 一样采取分区理念，一个 Topic 分为多个 partition，并且为保证数据可靠性，采取多副本存储，即 Leader 和 follower，根据性能和数据可靠的权衡提供异步和同步的刷盘存储。</li>
+<li>并且利用选举算法保证 Leader 挂了之后 follower 可以顶上，保证消息队列的高可用。</li>
+<li>也同样为了提高消息队列的可靠性利用本地文件系统来存储消息，并且采用顺序写的方式来提高性能。</li>
+<li>可根据消息队列的特性利用内存映射、零拷贝进一步的提升性能，还可利用像 Kafka 这种批处理思想提高整体的吞吐。</li>
+<li>提到的 Netty，各种注册中心就能问很多，比如各注册中心之间的选型对比等。</li>
+</ul>
+</li>
+<li><ul>
+<li>你还提到了选举算法，所以可能会问 Bully 算法、Raft 算法、ZAB 算法等等。</li>
+<li>你还提到了分区，可能会问这个分区和 RocketMQ 的队列有什么不同啊？具体分区要怎么实现？</li>
+<li>然后你提到顺序写，可能会问为什么要顺序写啊？你说的内存映射和零拷贝又是什么啊？那你知道 RocketMQ 和 Kafka 用了哪个吗?</li>
+<li>当然还有可能问各种细节，比如消息的写入如何存储、消息的索引如何生成等等，来深挖看你有没有看过消息中间件的源码。</li>
+</ul>
+</li>
+<li><p>推拉模式</p>
+</li>
+<li><ul>
+<li><p>推拉模式的时候指的是 Comsumer 和 Broker 之间的交互。</p>
+</li>
+<li><p>推模式：消息中间件主动将消息推送给消费者</p>
+</li>
+<li><ul>
+<li>优点：消息<strong>实时</strong>性高，对于消费者使用来说更简单。</li>
+<li>缺点：消费能力不足导致爆仓</li>
+<li>不适合：由于某些限制，消费者在某个条件成立时才能消费消息。需要批量拉取消息进行处理。</li>
+</ul>
+</li>
+<li><p>拉模式：消费者主动从消息中间件拉取消息</p>
+</li>
+<li><ul>
+<li>优点：消费者可以根据自身的情况来发起拉取消息的请求。更合适的进行消息的批量发送</li>
+<li>缺点：消息延迟、消息忙请求</li>
+</ul>
+</li>
+<li><p>RocketMQ 和 Kafka 都选择了拉模式，ActiveMQ基于推模式。</p>
+</li>
+<li><p>RocketMQ 和 Kafka 通过长轮询实现拉模式。</p>
+</li>
+</ul>
+</li>
+<li><p>Kafka</p>
+</li>
+<li><ul>
+<li>基于Pull模式来处理消费信息，有序，控制仅被消费一次，单机十万吞吐量。分布式架构，少数机器宕机不丢失数据，。</li>
+</ul>
+</li>
+<li><ul>
+<li>优点：强大性能吞吐量，兼容性好。时效性：ms级，分布式的，一个数据多个副本，少数机器宕机，不会丢失数据，不会导致不可用。</li>
+<li>缺点：单机超过64队列&#x2F;分区，Load会发送明显飙高，队列越多load越高，发送消息响应时长变长。消费失败不支持重试，单机宕机会发生消息乱序。</li>
+<li>场景：日志采集和传输。</li>
+</ul>
+</li>
+<li><p>RocketMQ</p>
+</li>
+<li><ul>
+<li>单机十万吞吐量，分布式架构，可用性非常高。</li>
+</ul>
+</li>
+<li><ul>
+<li>优点：性能高，吞吐量大，稳定可靠，有活跃中文社区。</li>
+<li>缺点：兼容性java，其他不行，没有实现JMS等接口，系统迁移需要大量代码。</li>
+<li>场景：可靠性高，稳定性强。</li>
+</ul>
+</li>
+<li><p>RabbitMQ</p>
+</li>
+<li><ul>
+<li>erlang语言本身的并发优势，性能较好，社区活跃度也比较高，但是不利于做二次开发和维护。数据量没有那么大，小公司优先选择功能比较完备的RabbitMQ。</li>
+</ul>
+</li>
+<li><ul>
+<li>优点：轻量迅捷易部署，有灵活的路由配置。</li>
+<li>缺点：性能和吞吐量不理想因为实现机制比较重，不易二次开发。接口协议复杂，维护成本高。</li>
+<li>场景：数据量不大，功能完备。</li>
+</ul>
+</li>
+<li><p>ActiveMQ</p>
+</li>
+<li><ul>
+<li>优点：主从架构，topic数量受吞吐量的影响，时效性：ms级，可用性：高，，消息可靠性：有较低的概率丢失数据，MQ领域的功能极其完备。</li>
+<li>缺点：维护越来越少，较少在大规模吞吐的场景中使用。</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/">https://alittlebitcool.github.io/2025/01/12/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%80%BB%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2024/10/27/JVM%E6%80%BB%E7%BB%93/" title="JVM总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">JVM总结</div></div></div></a><a class="pagination-related" href="/2025/02/02/%E7%BC%93%E5%AD%98%E6%80%BB%E7%BB%93/" title="缓存总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">缓存总结</div></div><div class="info-2"><div class="info-item-1">缓存组件选择 在设计架构缓存时，你首先要选定缓存组件，比如要用 Local-Cache，还是 Redis、Memcached、Pika 等开源缓存组件，如果业务缓存需求比较特殊，你还要考虑是直接定制开发一个新的缓存组件，还是对开源缓存进行二次开发，来满足业务需要。 缓存数据结构设计 确定好缓存组件后，你还要根据业务访问的特点，进行缓存数据结构的设计。对于直接简单 KV 读写的业务，你可以将这些业务数据封装为 String、Json、Protocol Buffer 等格式，序列化成字节序列，然后直接写入缓存中。读取时，先从缓存组件获取到数据的字节序列，再进行反序列化操作即可。对于只需要存取部分字段或需要在缓存端进行计算的业务，你可以把数据设计为 Hash、Set、List、Geo 等结构，存储到支持复杂集合数据类型的缓存中，如 Redis、Pika 等。 缓存分布设计 确定了缓存组件，设计好了缓存数据结构，接下来就要设计缓存的分布。可以从 3 个维度来进行缓存分布设计。  首先，要选择分布式算法，是采用取模还是一致性 Hash 进行分布。取模分布的方案简单，每个 key...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/12/feed%E6%B5%81%E5%88%86%E6%9E%90/" title="feed流分析">feed流分析</a><time datetime="2025-03-12T09:24:27.000Z" title="发表于 2025-03-12 17:24:27">2025-03-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-02T11:15:19.000Z" title="发表于 2025-03-02 19:15:19">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-02T11:15:16.000Z" title="发表于 2025-03-02 19:15:16">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-02T11:14:54.000Z" title="发表于 2025-03-02 19:14:54">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/%E7%BA%A2%E5%8C%85%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90/" title="红包系统分析">红包系统分析</a><time datetime="2025-02-17T11:23:49.000Z" title="发表于 2025-02-17 19:23:49">2025-02-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Elasticsearch | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="资料   最全整理   https:&#x2F;&#x2F;blog.csdn.net&#x2F;u011863024&#x2F;article&#x2F;details&#x2F;115721328 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jajian&#x2F;p&#x2F;11223992.html       https:&#x2F;&#x2F;pdai.tech&#x2F;md&#x2F;db&#x2F;nosql-es&#x2F;elasticsearch.html     写数据原理   客户端选择一个 nod">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Elasticsearch | YuXingZh Blog</title><meta name="author" content="YuXingZh"><meta name="copyright" content="YuXingZh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="资料 最全整理 https:&#x2F;&#x2F;blog.csdn.net&#x2F;u011863024&#x2F;article&#x2F;details&#x2F;115721328 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jajian&#x2F;p&#x2F;11223992.html https:&#x2F;&#x2F;pdai.tech&#x2F;md&#x2F;db&#x2F;nosql-es&#x2F;elasticsearch.html  写数据原理  客户端选择一个 node 发送请求过去，这个 no">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Elasticsearch">
 <meta property="og:url" content="https://alittlebitcool.github.io/2024/03/06/Elasticsearch/index.html">
 <meta property="og:site_name" content="YuXingZh Blog">
-<meta property="og:description" content="资料   最全整理   https:&#x2F;&#x2F;blog.csdn.net&#x2F;u011863024&#x2F;article&#x2F;details&#x2F;115721328 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jajian&#x2F;p&#x2F;11223992.html       https:&#x2F;&#x2F;pdai.tech&#x2F;md&#x2F;db&#x2F;nosql-es&#x2F;elasticsearch.html     写数据原理   客户端选择一个 nod">
+<meta property="og:description" content="资料 最全整理 https:&#x2F;&#x2F;blog.csdn.net&#x2F;u011863024&#x2F;article&#x2F;details&#x2F;115721328 https:&#x2F;&#x2F;www.cnblogs.com&#x2F;jajian&#x2F;p&#x2F;11223992.html https:&#x2F;&#x2F;pdai.tech&#x2F;md&#x2F;db&#x2F;nosql-es&#x2F;elasticsearch.html  写数据原理  客户端选择一个 node 发送请求过去，这个 no">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2024-03-06T11:53:23.000Z">
-<meta property="article:modified_time" content="2025-03-06T11:59:20.982Z">
+<meta property="article:modified_time" content="2025-03-12T11:44:11.992Z">
 <meta property="article:author" content="YuXingZh">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://alittlebitcool.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
@@ -17,7 +17,7 @@
   "url": "https://alittlebitcool.github.io/2024/03/06/Elasticsearch/",
   "image": "https://alittlebitcool.github.io/img/butterfly-icon.png",
   "datePublished": "2024-03-06T11:53:23.000Z",
-  "dateModified": "2025-03-06T11:59:20.982Z",
+  "dateModified": "2025-03-12T11:44:11.992Z",
   "author": [
     {
       "@type": "Person",
@@ -158,33 +158,18 @@
   isHighlightShrink: false,
   isToc: false,
   pageType: 'post'
-}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Elasticsearch</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Elasticsearch</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-06T11:53:23.000Z" title="发表于 2024-03-06 19:53:23">2024-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-06T11:59:20.982Z" title="更新于 2025-03-06 19:59:20">2025-03-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><ul>
+}</script><meta name="generator" content="Hexo 6.2.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">YuXingZh Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">Elasticsearch</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Elasticsearch</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-06T11:53:23.000Z" title="发表于 2024-03-06 19:53:23">2024-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-12T11:44:11.992Z" title="更新于 2025-03-12 19:44:11">2025-03-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><ul>
 <li><p>资料</p>
-</li>
-<li><ul>
-<li><p>最全整理</p>
-</li>
-<li><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011863024/article/details/115721328">https://blog.csdn.net/u011863024/article/details/115721328</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jajian/p/11223992.html">https://www.cnblogs.com/jajian/p/11223992.html</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
-<li><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-es/elasticsearch.html">https://pdai.tech/md/db/nosql-es/elasticsearch.html</a></li>
-</ul>
-</li>
-</ul>
+<p>最全整理</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011863024/article/details/115721328">https://blog.csdn.net/u011863024/article/details/115721328</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jajian/p/11223992.html">https://www.cnblogs.com/jajian/p/11223992.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-es/elasticsearch.html">https://pdai.tech/md/db/nosql-es/elasticsearch.html</a></p>
 </li>
 <li><p>写数据原理</p>
 </li>
-<li><ul>
-<li>客户端选择一个 node 发送请求过去，这个 node 就是 coordinating node。对 document 进行路由，将请求转发给有 primary shard 的 node。 </li>
-<li>实际的 node 上的 primary shard 处理请求，然后将数据同步到 replica node。</li>
-<li>coordinating node 发现 primary node 和所有 replica node 都搞定之后，就返回响应结果给客户端。</li>
-</ul>
+<li><p>客户端选择一个 node 发送请求过去，这个 node 就是 coordinating node。对 document 进行路由，将请求转发给有 primary shard 的 node。 </p>
+<p>实际的 node 上的 primary shard 处理请求，然后将数据同步到 replica node。</p>
+<p>coordinating node 发现 primary node 和所有 replica node 都搞定之后，就返回响应结果给客户端。</p>
 </li>
 <li><p>写数据底层原理</p>
 </li>
@@ -247,182 +232,6 @@
 <li>warm：索引不存在写操作，还有被查询的需要。</li>
 <li>cold：数据不存在写操作，读操作也不多。</li>
 <li>delete：索引不再需要，可以被安全删除。</li>
-</ul>
-</li>
-<li><p>查询和聚合的方式</p>
-</li>
-<li><ul>
-<li><p>DSL</p>
-</li>
-<li><ul>
-<li>基于文本match, query string</li>
-<li>基于词频term</li>
-<li>复合查询5种bool</li>
-</ul>
-</li>
-<li><p>EQL</p>
-</li>
-</ul>
-</li>
-<li><p>CRUD</p>
-</li>
-<li><ul>
-<li><p>GET</p>
-</li>
-<li><p>DELETE</p>
-</li>
-<li><p>POST</p>
-</li>
-<li><p>UPDATE</p>
-</li>
-<li><ul>
-<li>POST操作带有update情况下会对比源文档数据，如果相同不会有什么操作，文档version不增加。 </li>
-<li>PUT操作总会重新保存并增加version版本 POST时带_update对比元数据如果一样就不进行任何操作。 </li>
-<li>对于大并发更新，不带update。</li>
-<li>对于大并发查询偶尔更新，带update；</li>
-<li>对比更新，重新计算分配规则。</li>
-</ul>
-</li>
-<li><p>区别</p>
-</li>
-<li><ul>
-<li>POST新增。如果不指定id，会自动生成id。指定id就会修改这个数据，并新增版本号；</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><ul>
-<li><ul>
-<li><ul>
-<li>可以不指定id，不指定id时永远为创建</li>
-<li>指定不存在的id为创建</li>
-<li>指定存在的id为更新，而版本号会根据内容变没变而觉得版本号递增与否</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>PUT可以新增也可以修改。PUT必须指定id；由于PUT需要指定id，我们一般用来做修改操作，不指定id会报错。</p>
-</li>
-<li><ul>
-<li>必须指定id</li>
-<li>版本号总会增加</li>
-</ul>
-</li>
-<li><p>查询</p>
-</li>
-<li><ul>
-<li><p>query match</p>
-</li>
-<li><ul>
-<li>指定字段查询</li>
-</ul>
-</li>
-<li><p>query match_all</p>
-</li>
-<li><ul>
-<li>表示查询所有的数据</li>
-</ul>
-</li>
-<li><p>sort</p>
-</li>
-<li><ul>
-<li>按照什么字段排序</li>
-</ul>
-</li>
-<li><p>from+size</p>
-</li>
-<li><ul>
-<li>from和size两个字段，分页查询</li>
-</ul>
-</li>
-<li><p>match_phrase</p>
-</li>
-<li><ul>
-<li>查询段落匹配</li>
-</ul>
-</li>
-<li><p>bool</p>
-</li>
-<li><ul>
-<li>多条件查询，查询来组合多个查询条件。</li>
-<li>must，should，must_not和filter都是bool查询的子句。</li>
-</ul>
-</li>
-<li><p>query和filter</p>
-</li>
-<li><ul>
-<li>query 上下文的条件是用来给文档打分的，匹配越好 _score 越高；</li>
-<li>filter 的条件只产生两种结果：符合与不符合，后者被过滤掉。</li>
-</ul>
-</li>
-<li><p>相关字段</p>
-</li>
-<li><ul>
-<li><p>took</p>
-</li>
-<li><ul>
-<li>Elasticsearch运行查询所花费的时间</li>
-</ul>
-</li>
-<li><p>timed_out</p>
-</li>
-<li><ul>
-<li>搜索请求是否超时</li>
-</ul>
-</li>
-<li><p>_shards</p>
-</li>
-<li><ul>
-<li>搜索了多少个碎片，以及成功，失败或跳过了多少个碎片的细目分类。</li>
-</ul>
-</li>
-<li><p>max_score</p>
-</li>
-<li><ul>
-<li>找到的最相关文档的分数</li>
-</ul>
-</li>
-<li><p>hits.total.value</p>
-</li>
-<li><ul>
-<li>找到了多少个匹配的文档</li>
-</ul>
-</li>
-<li><p>hits.sort</p>
-</li>
-<li><ul>
-<li>文档的排序位置（不按相关性得分排序时）</li>
-</ul>
-</li>
-<li><p>hits._score</p>
-</li>
-<li><ul>
-<li>文档的相关性得分（使用match_all时不适用）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>聚合查询</p>
-</li>
-<li><ul>
-<li><p>简单聚合</p>
-</li>
-<li><ul>
-<li>aggs关键字对state字段聚合。</li>
-<li>doc_count表示bucket中每个州的数据条数。</li>
-</ul>
-</li>
-<li><p>嵌套聚合</p>
-</li>
-<li><ul>
-<li>aggs嵌套aggs聚合</li>
-<li>order排序</li>
-</ul>
-</li>
 </ul>
 </li>
 <li><p>索引</p>
@@ -513,14 +322,14 @@
 </ul>
 <img src="/2024/03/06/Elasticsearch/1.png" class title="image1">
 
-<p>![截图 (1)](D:\download\截图 (1).png)</p>
+
+
 <img src="/2024/03/06/Elasticsearch/2.png" class title="image2">
 
-<p>​    <img src="https://note.youdao.com/yws/res/27696/WEBRESOURCEc46a9af6196ac14889a97016b1ec3322" alt="0"></p>
+
+
 <p>与数据库对比</p>
-<p>​    <img src="https://note.youdao.com/yws/res/27827/WEBRESOURCEe30df44f0fe9ea38e3af1fd77b4869f8" alt="0"></p>
 <p>ES写数据</p>
-<p>​    <img src="https://note.youdao.com/yws/res/27837/WEBRESOURCEf4f927a273f39f148bd70495c890caa6" alt="0"></p>
 <p>ES写数据过程</p>
 <img src="/2024/03/06/Elasticsearch/3.png" class title="image3">
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2024/03/06/Elasticsearch/">https://alittlebitcool.github.io/2024/03/06/Elasticsearch/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">算法模板总结</div></div><div class="info-2"><div class="info-item-1">数据结构线性结构栈 ​	后进先出（LIFO） 的数据结构，常用于递归、括号匹配、表达式求值等问题。 ​	栈的应用场景 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253// 括号匹配public boolean isValid(String s) &#123;    Stack&lt;Character&gt; stack = new Stack&lt;&gt;();    for (char c : s.toCharArray()) &#123;        if (c == &#x27;(&#x27; || c == &#x27;[&#x27; || c == &#x27;&#123;&#x27;) &#123;            stack.push(c);        &#125; else &#123;            if (stack.isEmpty()) return false;           ...</div></div></div></a><a class="pagination-related" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">设计模式总结-创建型</div></div><div class="info-2"><div class="info-item-1">单例模式 ​	确保一个类只有一个实例，并提供一个全局访问点。 ​	将构造函数设为私有，防止外部直接创建对象。提供一个静态方法（如 getInstance）作为全局访问点。在静态方法中控制实例的创建和返回。 12345678910111213141516171819202122// 单例类class Singleton &#123;    private static Singleton instance;    // 私有构造函数    private Singleton() &#123;&#125;    // 全局访问点    public static Singleton getInstance() &#123;        if (instance == null) &#123;            instance = new Singleton();        &#125;        return instance;    &#125;&#125;// 客户端代码public class Client &#123;    public static...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/" title="数据结构总结">数据结构总结</a><time datetime="2025-03-06T11:40:14.000Z" title="发表于 2025-03-06 19:40:14">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-04T11:15:19.000Z" title="发表于 2025-03-04 19:15:19">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-04T11:15:16.000Z" title="发表于 2025-03-04 19:15:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-04T11:14:54.000Z" title="发表于 2025-03-04 19:14:54">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/06/Elasticsearch/" title="Elasticsearch">Elasticsearch</a><time datetime="2024-03-06T11:53:23.000Z" title="发表于 2024-03-06 19:53:23">2024-03-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io">YuXingZh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://alittlebitcool.github.io/2024/03/06/Elasticsearch/">https://alittlebitcool.github.io/2024/03/06/Elasticsearch/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://alittlebitcool.github.io" target="_blank">YuXingZh Blog</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/03/06/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF%E6%80%BB%E7%BB%93/" title="算法模板总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">算法模板总结</div></div><div class="info-2"><div class="info-item-1">算法设计范式分治法二分法 ​	基本二分查找模板 123456789101112131415// 适用于查找目标值是否存在，返回任意一个匹配的索引。public int binarySearch(int[] nums, int target) &#123;    int left = 0, right = nums.length - 1;    while (left &lt;= right) &#123;        int mid = left + (right - left) / 2;        if (nums[mid] == target) &#123;            return mid; // 找到目标值，返回索引        &#125; else if (nums[mid] &lt; target) &#123;            left = mid + 1; // 目标值在右半部分        &#125; else &#123;            right = mid - 1; // 目标值在左半部分        &#125;...</div></div></div></a><a class="pagination-related" href="/2024/06/01/Kubernetes/" title="Kubernetes"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Kubernetes</div></div><div class="info-2"><div class="info-item-1">Controller ​	控制器，它们就是维护我们的副本的数目的或者叫做我们的期望值的，一旦它的副本数不满足我们的期望值，replication controller就会将它改写成 我们的期望值 api ​	一切服务的访问入口，压力很大，为了减轻压力，每个请求下面就可以生成缓存 etcd ​	是 paxos 键值对采用 go 语言编写的键值对 数据库。 etcd 的官方 将它 定位成一个 可信赖的分布式键值存储服务器，它能够为整个分布式集群存储一些关键数据，协助分布式集群的正常运转。 可信赖：本身可以完成集群化 分布式：扩容缩非常方便 正常运转：保存我们的整个分布式集群的需要持久化的配置文件、配置信息，一旦我们的集群死亡后，我们可以借助到etcd 里面的一些信息，进行数据恢复 ectd 里面有2个版本，一个是 v2版，一个是v3版。v2版会将数据全部写入 内存中，v3 版本会引入本地卷的持久化操作(关机以后并不会造成数据损坏) 推荐使用kubernetes 集群中etcd v3, V1.11包含之前自带的的etcd是不支持V3的。 ETCD 键值数据库...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">YuXingZh</div><div class="author-info-description">欢迎来到YuXingZh的博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/12/feed%E6%B5%81%E5%88%86%E6%9E%90/" title="feed流分析">feed流分析</a><time datetime="2025-03-12T09:24:27.000Z" title="发表于 2025-03-12 17:24:27">2025-03-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E7%BB%93%E6%9E%84%E5%9E%8B/" title="设计模式总结-结构型">设计模式总结-结构型</a><time datetime="2025-03-02T11:15:19.000Z" title="发表于 2025-03-02 19:15:19">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="设计模式总结-行为型">设计模式总结-行为型</a><time datetime="2025-03-02T11:15:16.000Z" title="发表于 2025-03-02 19:15:16">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93-%E5%88%9B%E5%BB%BA%E5%9E%8B/" title="设计模式总结-创建型">设计模式总结-创建型</a><time datetime="2025-03-02T11:14:54.000Z" title="发表于 2025-03-02 19:14:54">2025-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/17/%E7%BA%A2%E5%8C%85%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90/" title="红包系统分析">红包系统分析</a><time datetime="2025-02-17T11:23:49.000Z" title="发表于 2025-02-17 19:23:49">2025-02-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By YuXingZh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.2.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
